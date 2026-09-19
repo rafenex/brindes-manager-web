@@ -1,0 +1,52 @@
+<div class="login-page">
+
+  <div class="login-card">
+
+    <div class="login-header">
+      <h1>Brindes Manager</h1>
+      <p>Entre na sua conta</p>
+    </div>
+
+    <form
+      [formGroup]="form"
+      (ngSubmit)="entrar()"
+    >
+
+      <div class="field">
+        <label for="email">E-mail</label>
+
+        <input
+          pInputText
+          id="email"
+          type="email"
+          formControlName="email"
+          placeholder="seu@email.com"
+        />
+      </div>
+
+      <div class="field">
+        <label for="password">Senha</label>
+
+        <p-password
+          inputId="password"
+          formControlName="password"
+          placeholder="Digite sua senha"
+          [feedback]="false"
+          [toggleMask]="true"
+          styleClass="password"
+        />
+      </div>
+
+      <p-button
+        type="submit"
+        label="Entrar"
+        icon="pi pi-sign-in"
+        [disabled]="form.invalid"
+        styleClass="login-button"
+      />
+
+    </form>
+
+  </div>
+
+</div>
