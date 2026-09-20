@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../../core/auth/auth.service';
-import { CustomerService } from '../../../consumers/services/customer.service';
+import { CustomerService } from '../../../customers/services/customer.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -10,23 +10,14 @@ import { CustomerService } from '../../../consumers/services/customer.service';
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss',
 })
-export class Dashboard implements OnInit {
+export class Dashboard {
   constructor(
     private readonly authService: AuthService,
     private readonly router: Router,
     private readonly customerService: CustomerService
   ) {}
 
-  ngOnInit(): void {
-    this.customerService.findAll().subscribe({
-      next: (customers) => {
-        console.log('Clientes:', customers);
-      },
-      error: (error) => {
-        console.error('Erro ao buscar clientes:', error);
-      },
-    });
-  }
+
   logout(): void {
     this.authService.logout();
     this.router.navigate(['/login']);
