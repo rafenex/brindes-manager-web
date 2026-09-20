@@ -1,0 +1,71 @@
+<div class="page">
+
+  <div class="form-card">
+
+    <div class="header">
+      <h1>
+        {{ categoryId ? 'Editar categoria' : 'Nova categoria' }}
+      </h1>
+
+      <p>
+        {{
+          categoryId
+            ? 'Atualize os dados da categoria.'
+            : 'Cadastre uma nova categoria de produto.'
+        }}
+      </p>
+    </div>
+
+    <form
+      [formGroup]="form"
+      (ngSubmit)="save()"
+    >
+
+      <div class="field">
+        <label for="name">Nome *</label>
+
+        <input
+          pInputText
+          id="name"
+          formControlName="name"
+          placeholder="Nome da categoria"
+        />
+      </div>
+
+      <div class="field">
+        <label for="description">Descrição</label>
+
+        <textarea
+          pTextarea
+          id="description"
+          formControlName="description"
+          rows="4"
+          placeholder="Descrição da categoria"
+        ></textarea>
+      </div>
+
+      <div class="actions">
+
+        <p-button
+          type="button"
+          label="Cancelar"
+          severity="secondary"
+          [outlined]="true"
+          (onClick)="cancel()"
+        />
+
+        <p-button
+          type="submit"
+          label="Salvar"
+          icon="pi pi-check"
+          [loading]="loading"
+          [disabled]="form.invalid"
+        />
+
+      </div>
+
+    </form>
+
+  </div>
+
+</div>
