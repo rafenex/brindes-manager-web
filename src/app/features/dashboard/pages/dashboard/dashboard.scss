@@ -1,13 +1,8 @@
 .dashboard {
-  min-height: 100vh;
   padding: 2rem;
-  background: #f4f6f8;
 }
 
 .header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   margin-bottom: 2rem;
 
   h1 {
@@ -17,46 +12,5 @@
   p {
     margin: 0.25rem 0 0;
     color: #6b7280;
-  }
-}
-
-.cards {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1rem;
-}
-
-.card {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-
-  background: white;
-  padding: 1.5rem;
-  border-radius: 12px;
-
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
-
-  > span {
-    font-size: 2rem;
-  }
-
-  div {
-    display: flex;
-    flex-direction: column;
-  }
-
-  small {
-    color: #6b7280;
-  }
-
-  strong {
-    font-size: 1.8rem;
-  }
-}
-
-@media (max-width: 768px) {
-  .cards {
-    grid-template-columns: 1fr;
   }
 }

@@ -1,0 +1,66 @@
+<div class="layout">
+
+  <aside class="sidebar">
+
+    <div class="logo">
+      <i class="pi pi-gift"></i>
+
+      <span>
+        Brindes Manager
+      </span>
+    </div>
+
+    <nav class="menu">
+
+      <a
+        routerLink="/dashboard"
+        routerLinkActive="active"
+      >
+        <i class="pi pi-home"></i>
+        Dashboard
+      </a>
+
+      <a
+        routerLink="/customers"
+        routerLinkActive="active"
+      >
+        <i class="pi pi-users"></i>
+        Clientes
+      </a>
+
+      <a>
+        <i class="pi pi-tags"></i>
+        Categorias
+      </a>
+
+      <a>
+        <i class="pi pi-box"></i>
+        Produtos
+      </a>
+
+      <a>
+        <i class="pi pi-shopping-cart"></i>
+        Pedidos
+      </a>
+
+    </nav>
+
+    <div class="sidebar-footer">
+
+      <p-button
+        label="Sair"
+        icon="pi pi-sign-out"
+        severity="secondary"
+        [text]="true"
+        (onClick)="logout()"
+      />
+
+    </div>
+
+  </aside>
+
+  <main class="content">
+    <router-outlet />
+  </main>
+
+</div>
