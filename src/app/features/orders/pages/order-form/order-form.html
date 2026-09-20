@@ -1,0 +1,158 @@
+<div class="page">
+  <div class="form-card">
+    <div class="header">
+      <h1>{{ orderId ? 'Editar pedido' : 'Novo pedido' }}</h1>
+
+      <p>
+        {{ orderId ? 'Atualize os dados do pedido.' : 'Cadastre um novo pedido.'
+        }}
+      </p>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="save()">
+      <div class="field">
+        <label for="customerId">Cliente *</label>
+
+        <p-select
+          inputId="customerId"
+          formControlName="customerId"
+          [options]="customers"
+          optionLabel="name"
+          optionValue="id"
+          placeholder="Selecione um cliente"
+          [showClear]="true"
+        />
+      </div>
+
+      <div class="field">
+        <label for="notes">Observação</label>
+
+        <textarea
+          pTextarea
+          id="notes"
+          formControlName="notes"
+          rows="3"
+          placeholder="Observações do pedido"
+        ></textarea>
+      </div>
+
+      <div class="items-header">
+        <h2>Itens</h2>
+
+        <p-button
+          type="button"
+          label="Adicionar produto"
+          icon="pi pi-plus"
+          severity="secondary"
+          (onClick)="addItem()"
+        />
+      </div>
+
+      <div formArrayName="items">
+  @for (item of items.controls; track $index; let i = $index) {
+
+    <div class="item-card" [formGroupName]="i">
+
+      <div class="item-grid">
+
+        <div class="field">
+          <label>Produto *</label>
+
+          <p-select
+            formControlName="productId"
+            [options]="products"
+            optionLabel="name"
+            optionValue="id"
+            placeholder="Selecione um produto"
+            [filter]="true"
+            filterBy="name,reference"
+            (onChange)="onProductChange(i, $event.value)"
+          />
+        </div>
+
+        <div class="field">
+          <label>Quantidade *</label>
+
+          <p-inputnumber
+            formControlName="quantity"
+            [min]="1"
+            [useGrouping]="false"
+          />
+        </div>
+
+        <div class="field">
+          <label>Preço unitário *</label>
+
+          <p-inputnumber
+            formControlName="unitPrice"
+            mode="currency"
+            currency="BRL"
+            locale="pt-BR"
+            [min]="0.01"
+          />
+        </div>
+
+        <div class="remove">
+          <p-button
+            type="button"
+            icon="pi pi-trash"
+            severity="danger"
+            [text]="true"
+            [disabled]="items.length === 1"
+            (onClick)="removeItem(i)"
+          />
+        </div>
+
+      </div>
+
+      <div class="field">
+        <label>Descrição personalizada</label>
+
+        <textarea
+          pTextarea
+          formControlName="customDescription"
+          rows="2"
+          placeholder="Ex: Caneca branca com logo azul"
+        ></textarea>
+      </div>
+
+      <div class="item-total">
+        Total do item:
+        <strong>
+          {{ getItemTotal(i) | currency:'BRL':'symbol':'1.2-2' }}
+        </strong>
+      </div>
+
+    </div>
+
+  }
+</div>
+
+      <div class="order-total">
+        <span>Total do pedido</span>
+
+        <strong>
+          {{ getOrderTotal() | currency:'BRL':'symbol':'1.2-2' }}
+        </strong>
+      </div>
+
+      <div class="actions">
+        <p-button
+          type="button"
+          label="Cancelar"
+          severity="secondary"
+          [outlined]="true"
+          (onClick)="cancel()"
+        />
+
+        <p-button
+          type="submit"
+          label="Salvar pedido"
+          icon="pi pi-check"
+          [loading]="loading"
+          [disabled]="form.invalid"
+        />
+      </div>
+    </form>
+  </div>
+</div>
