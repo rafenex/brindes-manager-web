@@ -9,6 +9,7 @@ import { TagModule } from 'primeng/tag';
 import { Order, OrderService, OrderStatus } from '../../services/order.service';
 import { FormsModule } from '@angular/forms';
 import { SelectModule } from 'primeng/select';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-order-list',
@@ -54,7 +55,8 @@ export class OrderList implements OnInit {
   ];
   constructor(
     private readonly orderService: OrderService,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly messageService: MessageService
   ) {}
 
   ngOnInit(): void {
@@ -95,10 +97,22 @@ export class OrderList implements OnInit {
 
     this.orderService.delete(id).subscribe({
       next: () => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Sucesso',
+          detail: 'Pedido excluído.',
+        });
+
         this.loadOrders();
       },
       error: (error) => {
         console.error('Erro ao excluir pedido:', error);
+
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Erro',
+          detail: 'Não foi possível excluir o pedido.',
+        });
       },
     });
   }
@@ -135,10 +149,22 @@ export class OrderList implements OnInit {
   updateStatus(id: number, status: OrderStatus): void {
     this.orderService.updateStatus(id, status).subscribe({
       next: () => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Sucesso',
+          detail: 'Status do pedido atualizado.',
+        });
+
         this.loadOrders();
       },
       error: (error) => {
         console.error('Erro ao atualizar status:', error);
+
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Erro',
+          detail: 'Não foi possível atualizar o status do pedido.',
+        });
       },
     });
   }

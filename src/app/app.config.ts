@@ -11,9 +11,11 @@ import Aura from '@primeuix/themes/aura';
 
 import { routes } from './app.routes';
 import { authInterceptor } from './core/auth/auth.interceptor';
+import { MessageService } from 'primeng/api';
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    MessageService,
     provideBrowserGlobalErrorListeners(),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),

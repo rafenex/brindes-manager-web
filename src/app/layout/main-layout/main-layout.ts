@@ -9,6 +9,7 @@ import {
 import { ButtonModule } from 'primeng/button';
 
 import { AuthService } from '../../core/auth/auth.service';
+import { ToastModule } from 'primeng/toast';
 
 @Component({
   selector: 'app-main-layout',
@@ -16,7 +17,8 @@ import { AuthService } from '../../core/auth/auth.service';
     RouterOutlet,
     RouterLink,
     RouterLinkActive,
-    ButtonModule
+    ButtonModule,
+    ToastModule
   ],
   templateUrl: './main-layout.html',
   styleUrl: './main-layout.scss'
