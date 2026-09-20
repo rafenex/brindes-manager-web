@@ -46,4 +46,8 @@ export class CustomerService {
   update(id: number, request: CustomerRequest): Observable<Customer> {
     return this.http.put<Customer>(`${this.apiUrl}/${id}`, request);
   }
+
+  delete(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
 }

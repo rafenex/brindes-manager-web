@@ -49,7 +49,12 @@
               [text]="true"
               (onClick)="editCustomer(customer.id)"
             />
-            <p-button icon="pi pi-trash" severity="danger" [text]="true" />
+            <p-button
+              icon="pi pi-trash"
+              severity="danger"
+              [text]="true"
+              (onClick)="deleteCustomer(customer.id)"
+            />
           </td>
         </tr>
       </ng-template>

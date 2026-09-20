@@ -47,4 +47,23 @@ export class CustomerList implements OnInit {
   editCustomer(id: number): void {
     this.router.navigate(['/customers', id, 'edit']);
   }
+
+  deleteCustomer(id: number): void {
+    const confirmed = window.confirm(
+      'Tem certeza que deseja excluir este cliente?'
+    );
+
+    if (!confirmed) {
+      return;
+    }
+
+    this.customerService.delete(id).subscribe({
+      next: () => {
+        this.loadCustomers();
+      },
+      error: (error) => {
+        console.error('Erro ao excluir cliente:', error);
+      },
+    });
+  }
 }
