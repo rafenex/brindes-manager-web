@@ -1,5 +1,4 @@
 <div class="dashboard">
-
   <header class="header">
     <div>
       <h1>Dashboard</h1>
@@ -8,13 +7,12 @@
   </header>
 
   <section class="cards">
-
     <div class="card">
       <span class="pi pi-users"></span>
 
       <div>
         <small>Clientes</small>
-        <strong>--</strong>
+        {{ loading ? '...' : totalCustomers }}
       </div>
     </div>
 
@@ -23,7 +21,7 @@
 
       <div>
         <small>Produtos</small>
-        <strong>--</strong>
+        {{ loading ? '...' : totalProducts }}
       </div>
     </div>
 
@@ -32,10 +30,8 @@
 
       <div>
         <small>Pedidos</small>
-        <strong>--</strong>
+        <strong> {{ loading ? '...' : totalOrders }} </strong>
       </div>
     </div>
-
   </section>
-
 </div>

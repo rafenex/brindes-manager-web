@@ -1,5 +1,7 @@
 .dashboard {
+  width: 100%;
   padding: 2rem;
+  box-sizing: border-box;
 }
 
 .header {
@@ -7,10 +9,70 @@
 
   h1 {
     margin: 0;
+    font-size: 2rem;
+    font-weight: 700;
+    color: #111827;
   }
 
   p {
     margin: 0.25rem 0 0;
     color: #6b7280;
+  }
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.5rem;
+}
+
+.card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  padding: 1.5rem;
+
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+
+  > span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 48px;
+    height: 48px;
+
+    border-radius: 10px;
+    background: #eef2ff;
+
+    color: #4f46e5;
+    font-size: 1.4rem;
+  }
+
+  div {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  small {
+    font-size: 0.9rem;
+    color: #6b7280;
+  }
+
+  strong {
+    font-size: 1.8rem;
+    color: #111827;
+  }
+}
+
+@media (max-width: 900px) {
+  .cards {
+    grid-template-columns: 1fr;
   }
 }
