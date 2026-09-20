@@ -43,8 +43,12 @@
           <td>{{ customer.active ? 'Ativo' : 'Inativo' }}</td>
 
           <td class="actions">
-            <p-button icon="pi pi-pencil" severity="secondary" [text]="true" />
-
+            <p-button
+              icon="pi pi-pencil"
+              severity="secondary"
+              [text]="true"
+              (onClick)="editCustomer(customer.id)"
+            />
             <p-button icon="pi pi-trash" severity="danger" [text]="true" />
           </td>
         </tr>

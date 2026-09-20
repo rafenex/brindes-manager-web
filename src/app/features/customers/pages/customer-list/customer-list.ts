@@ -43,4 +43,8 @@ export class CustomerList implements OnInit {
       },
     });
   }
+
+  editCustomer(id: number): void {
+    this.router.navigate(['/customers', id, 'edit']);
+  }
 }

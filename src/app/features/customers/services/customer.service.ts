@@ -38,4 +38,12 @@ export class CustomerService {
   create(request: CustomerRequest): Observable<Customer> {
     return this.http.post<Customer>(this.apiUrl, request);
   }
+
+  findById(id: number): Observable<Customer> {
+    return this.http.get<Customer>(`${this.apiUrl}/${id}`);
+  }
+
+  update(id: number, request: CustomerRequest): Observable<Customer> {
+    return this.http.put<Customer>(`${this.apiUrl}/${id}`, request);
+  }
 }

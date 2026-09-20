@@ -24,6 +24,12 @@ export const routes: Routes = [
   },
 
   {
+    path: 'customers/:id/edit',
+    component: CustomerForm,
+    canActivate: [authGuard],
+  },
+
+  {
     path: 'customers',
     component: CustomerList,
     canActivate: [authGuard],
