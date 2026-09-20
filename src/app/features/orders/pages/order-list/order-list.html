@@ -1,27 +1,20 @@
 <div class="page">
-
   <div class="page-header">
     <div>
       <h1>Pedidos</h1>
       <p>Gerencie os pedidos cadastrados.</p>
     </div>
 
-    <p-button
-      label="Novo pedido"
-      icon="pi pi-plus"
-      (onClick)="newOrder()"
-    />
+    <p-button label="Novo pedido" icon="pi pi-plus" (onClick)="newOrder()" />
   </div>
 
   <div class="table-card">
-
     <p-table
       [value]="orders"
       [loading]="loading"
       [paginator]="true"
       [rows]="10"
     >
-
       <ng-template pTemplate="header">
         <tr>
           <th>Código</th>
@@ -46,16 +39,11 @@
             />
           </td>
 
-          <td>
-            {{ order.totalAmount | currency:'BRL':'symbol':'1.2-2' }}
-          </td>
+          <td>{{ order.totalAmount | currency:'BRL':'symbol':'1.2-2' }}</td>
 
-          <td>
-            {{ order.createdAt | date:'dd/MM/yyyy HH:mm' }}
-          </td>
+          <td>{{ order.createdAt | date:'dd/MM/yyyy HH:mm' }}</td>
 
           <td class="actions">
-
             <p-button
               icon="pi pi-pencil"
               severity="secondary"
@@ -64,26 +52,34 @@
             />
 
             <p-button
+              icon="pi pi-check"
+              severity="success"
+              [text]="true"
+              (onClick)="updateStatus(order.id, 'APPROVED')"
+            />
+
+            <p-button
+              icon="pi pi-file-pdf"
+              severity="secondary"
+              [text]="true"
+              (onClick)="downloadPdf(order.id)"
+            />
+
+            <p-button
               icon="pi pi-trash"
               severity="danger"
               [text]="true"
               (onClick)="deleteOrder(order.id)"
             />
-
           </td>
         </tr>
       </ng-template>
 
       <ng-template pTemplate="emptymessage">
         <tr>
-          <td colspan="6" class="empty">
-            Nenhum pedido cadastrado.
-          </td>
+          <td colspan="6" class="empty">Nenhum pedido cadastrado.</td>
         </tr>
       </ng-template>
-
     </p-table>
-
   </div>
-
 </div>

@@ -6,34 +6,22 @@ import { ButtonModule } from 'primeng/button';
 import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 
-import {
-  Order,
-  OrderService,
-  OrderStatus
-} from '../../services/order.service';
+import { Order, OrderService, OrderStatus } from '../../services/order.service';
 
 @Component({
   selector: 'app-order-list',
-  imports: [
-    TableModule,
-    ButtonModule,
-    TagModule,
-    CurrencyPipe,
-    DatePipe
-  ],
+  imports: [TableModule, ButtonModule, TagModule, CurrencyPipe, DatePipe],
   templateUrl: './order-list.html',
-  styleUrl: './order-list.scss'
+  styleUrl: './order-list.scss',
 })
 export class OrderList implements OnInit {
-
   orders: Order[] = [];
   loading = true;
 
   constructor(
     private readonly orderService: OrderService,
     private readonly router: Router
-  ) {
-  }
+  ) {}
 
   ngOnInit(): void {
     this.loadOrders();
@@ -43,14 +31,14 @@ export class OrderList implements OnInit {
     this.loading = true;
 
     this.orderService.findAll().subscribe({
-      next: orders => {
+      next: (orders) => {
         this.orders = orders;
         this.loading = false;
       },
-      error: error => {
+      error: (error) => {
         console.error('Erro ao buscar pedidos:', error);
         this.loading = false;
-      }
+      },
     });
   }
 
@@ -75,9 +63,9 @@ export class OrderList implements OnInit {
       next: () => {
         this.loadOrders();
       },
-      error: error => {
+      error: (error) => {
         console.error('Erro ao excluir pedido:', error);
-      }
+      },
     });
   }
 
@@ -87,7 +75,7 @@ export class OrderList implements OnInit {
       APPROVED: 'Aprovado',
       IN_PRODUCTION: 'Em produção',
       DELIVERED: 'Entregue',
-      CANCELED: 'Cancelado'
+      CANCELED: 'Cancelado',
     };
 
     return labels[status];
@@ -104,9 +92,39 @@ export class OrderList implements OnInit {
       APPROVED: 'info',
       IN_PRODUCTION: 'warn',
       DELIVERED: 'success',
-      CANCELED: 'danger'
+      CANCELED: 'danger',
     };
 
     return severities[status];
+  }
+
+  updateStatus(id: number, status: OrderStatus): void {
+    this.orderService.updateStatus(id, status).subscribe({
+      next: () => {
+        this.loadOrders();
+      },
+      error: (error) => {
+        console.error('Erro ao atualizar status:', error);
+      },
+    });
+  }
+
+  downloadPdf(id: number): void {
+    this.orderService.downloadPdf(id).subscribe({
+      next: (blob) => {
+        const url = window.URL.createObjectURL(blob);
+
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `pedido-${id}.pdf`;
+
+        link.click();
+
+        window.URL.revokeObjectURL(url);
+      },
+      error: (error) => {
+        console.error('Erro ao baixar PDF:', error);
+      },
+    });
   }
 }
