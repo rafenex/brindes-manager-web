@@ -4,32 +4,25 @@ import { Router } from '@angular/router';
 
 import { ButtonModule } from 'primeng/button';
 import { TableModule } from 'primeng/table';
-
-import {
-  Product,
-  ProductService
-} from '../../services/product.service';
+import { Product, ProductService } from '../../services/product.service';
+import { ConfirmationService, MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-product-list',
-  imports: [
-    TableModule,
-    ButtonModule,
-    CurrencyPipe
-  ],
+  imports: [TableModule, ButtonModule, CurrencyPipe],
   templateUrl: './product-list.html',
-  styleUrl: './product-list.scss'
+  styleUrl: './product-list.scss',
 })
 export class ProductList implements OnInit {
-
   products: Product[] = [];
   loading = true;
 
   constructor(
     private readonly productService: ProductService,
-    private readonly router: Router
-  ) {
-  }
+    private readonly router: Router,
+    private readonly confirmationService: ConfirmationService,
+    private readonly messageService: MessageService
+  ) {}
 
   ngOnInit(): void {
     this.loadProducts();
@@ -39,14 +32,14 @@ export class ProductList implements OnInit {
     this.loading = true;
 
     this.productService.findAll().subscribe({
-      next: products => {
+      next: (products) => {
         this.products = products;
         this.loading = false;
       },
-      error: error => {
+      error: (error) => {
         console.error('Erro ao buscar produtos:', error);
         this.loading = false;
-      }
+      },
     });
   }
 
@@ -59,21 +52,35 @@ export class ProductList implements OnInit {
   }
 
   deleteProduct(id: number): void {
-    const confirmed = window.confirm(
-      'Tem certeza que deseja excluir este produto?'
-    );
+    this.confirmationService.confirm({
+      header: 'Excluir produto',
+      message: 'Tem certeza que deseja excluir este produto?',
+      icon: 'pi pi-exclamation-triangle',
+      acceptLabel: 'Excluir',
+      rejectLabel: 'Cancelar',
 
-    if (!confirmed) {
-      return;
-    }
+      accept: () => {
+        this.productService.delete(id).subscribe({
+          next: () => {
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Sucesso',
+              detail: 'Produto excluído.',
+            });
 
-    this.productService.delete(id).subscribe({
-      next: () => {
-        this.loadProducts();
+            this.loadProducts();
+          },
+          error: (error) => {
+            console.error('Erro ao excluir produto:', error);
+
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Erro',
+              detail: 'Não foi possível excluir o produto.',
+            });
+          },
+        });
       },
-      error: error => {
-        console.error('Erro ao excluir produto:', error);
-      }
     });
   }
 }

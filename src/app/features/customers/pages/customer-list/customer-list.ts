@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { TableModule } from 'primeng/table';
 import { Router } from '@angular/router';
-
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { Customer, CustomerService } from '../../services/customer.service';
 
 @Component({
@@ -18,7 +18,9 @@ export class CustomerList implements OnInit {
 
   constructor(
     private readonly customerService: CustomerService,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly confirmationService: ConfirmationService,
+    private readonly messageService: MessageService
   ) {}
 
   ngOnInit(): void {
@@ -49,20 +51,34 @@ export class CustomerList implements OnInit {
   }
 
   deleteCustomer(id: number): void {
-    const confirmed = window.confirm(
-      'Tem certeza que deseja excluir este cliente?'
-    );
+    this.confirmationService.confirm({
+      header: 'Excluir cliente',
+      message: 'Tem certeza que deseja excluir este cliente?',
+      icon: 'pi pi-exclamation-triangle',
+      acceptLabel: 'Excluir',
+      rejectLabel: 'Cancelar',
 
-    if (!confirmed) {
-      return;
-    }
+      accept: () => {
+        this.customerService.delete(id).subscribe({
+          next: () => {
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Sucesso',
+              detail: 'Cliente excluído.',
+            });
 
-    this.customerService.delete(id).subscribe({
-      next: () => {
-        this.loadCustomers();
-      },
-      error: (error) => {
-        console.error('Erro ao excluir cliente:', error);
+            this.loadCustomers();
+          },
+          error: (error) => {
+            console.error('Erro ao excluir cliente:', error);
+
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Erro',
+              detail: 'Não foi possível excluir o cliente.',
+            });
+          },
+        });
       },
     });
   }
