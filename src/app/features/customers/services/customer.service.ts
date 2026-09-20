@@ -15,17 +15,27 @@ export interface Customer {
   updatedAt: string;
 }
 
+export interface CustomerRequest {
+  name: string;
+  companyName: string;
+  document: string;
+  email: string;
+  phone: string;
+}
+
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CustomerService {
-
   private readonly apiUrl = 'http://localhost:8080/api/customers';
 
-  constructor(private readonly http: HttpClient) {
-  }
+  constructor(private readonly http: HttpClient) {}
 
   findAll(): Observable<Customer[]> {
     return this.http.get<Customer[]>(this.apiUrl);
+  }
+
+  create(request: CustomerRequest): Observable<Customer> {
+    return this.http.post<Customer>(this.apiUrl, request);
   }
 }

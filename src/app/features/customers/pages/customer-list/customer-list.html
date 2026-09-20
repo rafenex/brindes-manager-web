@@ -1,5 +1,4 @@
 <div class="page">
-
   <div class="page-header">
     <div>
       <h1>Clientes</h1>
@@ -9,11 +8,11 @@
     <p-button
       label="Novo cliente"
       icon="pi pi-plus"
+      (onClick)="newCustomer()"
     />
   </div>
 
   <div class="table-card">
-
     <p-table
       [value]="customers"
       [loading]="loading"
@@ -21,7 +20,6 @@
       [rows]="10"
       [tableStyle]="{ 'min-width': '60rem' }"
     >
-
       <ng-template pTemplate="header">
         <tr>
           <th>Nome</th>
@@ -42,36 +40,21 @@
           <td>{{ customer.email || '-' }}</td>
           <td>{{ customer.phone || '-' }}</td>
 
-          <td>
-            {{ customer.active ? 'Ativo' : 'Inativo' }}
-          </td>
+          <td>{{ customer.active ? 'Ativo' : 'Inativo' }}</td>
 
           <td class="actions">
-            <p-button
-              icon="pi pi-pencil"
-              severity="secondary"
-              [text]="true"
-            />
+            <p-button icon="pi pi-pencil" severity="secondary" [text]="true" />
 
-            <p-button
-              icon="pi pi-trash"
-              severity="danger"
-              [text]="true"
-            />
+            <p-button icon="pi pi-trash" severity="danger" [text]="true" />
           </td>
         </tr>
       </ng-template>
 
       <ng-template pTemplate="emptymessage">
         <tr>
-          <td colspan="7" class="empty">
-            Nenhum cliente cadastrado.
-          </td>
+          <td colspan="7" class="empty">Nenhum cliente cadastrado.</td>
         </tr>
       </ng-template>
-
     </p-table>
-
   </div>
-
 </div>

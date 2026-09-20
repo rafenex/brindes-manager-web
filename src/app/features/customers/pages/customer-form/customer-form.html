@@ -1,0 +1,97 @@
+<div class="page">
+
+  <div class="form-card">
+
+    <div class="header">
+      <div>
+        <h1>Novo cliente</h1>
+        <p>Cadastre os dados do cliente.</p>
+      </div>
+    </div>
+
+    <form
+      [formGroup]="form"
+      (ngSubmit)="save()"
+    >
+
+      <div class="field">
+        <label for="name">Nome *</label>
+
+        <input
+          pInputText
+          id="name"
+          formControlName="name"
+          placeholder="Nome do cliente"
+        />
+      </div>
+
+      <div class="field">
+        <label for="companyName">Empresa</label>
+
+        <input
+          pInputText
+          id="companyName"
+          formControlName="companyName"
+          placeholder="Nome da empresa"
+        />
+      </div>
+
+      <div class="field">
+        <label for="document">CPF/CNPJ</label>
+
+        <input
+          pInputText
+          id="document"
+          formControlName="document"
+          placeholder="Documento"
+        />
+      </div>
+
+      <div class="field">
+        <label for="email">E-mail</label>
+
+        <input
+          pInputText
+          id="email"
+          type="email"
+          formControlName="email"
+          placeholder="cliente@email.com"
+        />
+      </div>
+
+      <div class="field">
+        <label for="phone">Telefone</label>
+
+        <input
+          pInputText
+          id="phone"
+          formControlName="phone"
+          placeholder="Telefone"
+        />
+      </div>
+
+      <div class="actions">
+
+        <p-button
+          type="button"
+          label="Cancelar"
+          severity="secondary"
+          [outlined]="true"
+          (onClick)="cancel()"
+        />
+
+        <p-button
+          type="submit"
+          label="Salvar"
+          icon="pi pi-check"
+          [loading]="loading"
+          [disabled]="form.invalid"
+        />
+
+      </div>
+
+    </form>
+
+  </div>
+
+</div>
