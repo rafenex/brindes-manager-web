@@ -1,0 +1,112 @@
+<div class="page">
+
+  <div class="form-card">
+
+    <div class="header">
+      <h1>
+        {{ productId ? 'Editar produto' : 'Novo produto' }}
+      </h1>
+
+      <p>
+        {{
+          productId
+            ? 'Atualize os dados do produto.'
+            : 'Cadastre um novo produto.'
+        }}
+      </p>
+    </div>
+
+    <form
+      [formGroup]="form"
+      (ngSubmit)="save()"
+    >
+
+      <div class="field">
+        <label for="reference">Referência *</label>
+
+        <input
+          pInputText
+          id="reference"
+          formControlName="reference"
+          placeholder="Ex: CAN-001"
+        />
+      </div>
+
+      <div class="field">
+        <label for="name">Nome *</label>
+
+        <input
+          pInputText
+          id="name"
+          formControlName="name"
+          placeholder="Nome do produto"
+        />
+      </div>
+
+      <div class="field">
+        <label for="description">Descrição</label>
+
+        <textarea
+          pTextarea
+          id="description"
+          formControlName="description"
+          rows="4"
+          placeholder="Descrição do produto"
+        ></textarea>
+      </div>
+
+      <div class="field">
+        <label for="basePrice">Preço base *</label>
+
+        <p-inputnumber
+          inputId="basePrice"
+          formControlName="basePrice"
+          mode="currency"
+          currency="BRL"
+          locale="pt-BR"
+          [min]="0"
+          [minFractionDigits]="2"
+          [maxFractionDigits]="2"
+        />
+      </div>
+
+      <div class="field">
+        <label for="categoryId">Categoria *</label>
+
+        <p-select
+          inputId="categoryId"
+          formControlName="categoryId"
+          [options]="categories"
+          optionLabel="name"
+          optionValue="id"
+          placeholder="Selecione uma categoria"
+          [loading]="loadingCategories"
+          [showClear]="true"
+        />
+      </div>
+
+      <div class="actions">
+
+        <p-button
+          type="button"
+          label="Cancelar"
+          severity="secondary"
+          [outlined]="true"
+          (onClick)="cancel()"
+        />
+
+        <p-button
+          type="submit"
+          label="Salvar"
+          icon="pi pi-check"
+          [loading]="loading"
+          [disabled]="form.invalid"
+        />
+
+      </div>
+
+    </form>
+
+  </div>
+
+</div>

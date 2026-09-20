@@ -10,6 +10,8 @@ import { CustomerList } from './features/customers/pages/customer-list/customer-
 import { CustomerForm } from './features/customers/pages/customer-form/customer-form';
 import { CategoryList } from './features/categories/pages/category-list/category-list';
 import { CategoryForm } from './features/categories/pages/category-form/category-form';
+import { ProductList } from './features/products/pages/product-list/product-list';
+import { ProductForm } from './features/products/pages/product-form/product-form';
 
 export const routes: Routes = [
   {
@@ -53,6 +55,18 @@ export const routes: Routes = [
       {
         path: 'categories',
         component: CategoryList,
+      },
+      {
+        path: 'products/new',
+        component: ProductForm,
+      },
+      {
+        path: 'products/:id/edit',
+        component: ProductForm,
+      },
+      {
+        path: 'products',
+        component: ProductList,
       },
     ],
   },
