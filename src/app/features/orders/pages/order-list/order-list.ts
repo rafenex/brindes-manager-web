@@ -9,7 +9,7 @@ import { TagModule } from 'primeng/tag';
 import { Order, OrderService, OrderStatus } from '../../services/order.service';
 import { FormsModule } from '@angular/forms';
 import { SelectModule } from 'primeng/select';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-order-list',
@@ -56,7 +56,8 @@ export class OrderList implements OnInit {
   constructor(
     private readonly orderService: OrderService,
     private readonly router: Router,
-    private readonly messageService: MessageService
+    private readonly messageService: MessageService,
+    private readonly confirmationService: ConfirmationService
   ) {}
 
   ngOnInit(): void {
@@ -87,31 +88,34 @@ export class OrderList implements OnInit {
   }
 
   deleteOrder(id: number): void {
-    const confirmed = window.confirm(
-      'Tem certeza que deseja excluir este pedido?'
-    );
+    this.confirmationService.confirm({
+      header: 'Excluir pedido',
+      message: 'Tem certeza que deseja excluir este pedido?',
+      icon: 'pi pi-exclamation-triangle',
 
-    if (!confirmed) {
-      return;
-    }
+      acceptLabel: 'Excluir',
+      rejectLabel: 'Cancelar',
 
-    this.orderService.delete(id).subscribe({
-      next: () => {
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Sucesso',
-          detail: 'Pedido excluído.',
-        });
+      accept: () => {
+        this.orderService.delete(id).subscribe({
+          next: () => {
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Sucesso',
+              detail: 'Pedido excluído.',
+            });
 
-        this.loadOrders();
-      },
-      error: (error) => {
-        console.error('Erro ao excluir pedido:', error);
+            this.loadOrders();
+          },
+          error: (error) => {
+            console.error('Erro ao excluir pedido:', error);
 
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Erro',
-          detail: 'Não foi possível excluir o pedido.',
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Erro',
+              detail: 'Não foi possível excluir o pedido.',
+            });
+          },
         });
       },
     });
