@@ -1,0 +1,47 @@
+name: Deploy DEV
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  build:
+    name: Build Angular
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build application
+        run: npm run build
+
+  deploy:
+    name: Deploy to EC2
+    needs: build
+    runs-on: [self-hosted, Linux, X64]
+
+    steps:
+      - name: Update frontend
+        run: |
+          cd /home/ubuntu/apps/brindes-manager-web
+
+          git fetch origin
+          git checkout dev
+          git reset --hard origin/dev
+
+          npm ci
+          npm run build
+
+          sudo rm -rf /var/www/brindes-manager-dev/*
+          sudo cp -r dist/brindes-manager-web/browser/* /var/www/brindes-manager-dev/
