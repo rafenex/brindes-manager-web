@@ -1,26 +1,15 @@
 <div class="page">
-
   <div class="form-card">
-
     <div class="header">
-      <h1>
-        {{ productId ? 'Editar produto' : 'Novo produto' }}
-      </h1>
+      <h1>{{ productId ? 'Editar produto' : 'Novo produto' }}</h1>
 
       <p>
-        {{
-          productId
-            ? 'Atualize os dados do produto.'
-            : 'Cadastre um novo produto.'
-        }}
+        {{ productId ? 'Atualize os dados do produto.' : 'Cadastre um novo
+        produto.' }}
       </p>
     </div>
 
-    <form
-      [formGroup]="form"
-      (ngSubmit)="save()"
-    >
-
+    <form [formGroup]="form" (ngSubmit)="save()">
       <div class="field">
         <label for="reference">Referência *</label>
 
@@ -76,9 +65,10 @@
         <p-select
           inputId="categoryId"
           formControlName="categoryId"
-          [options]="categories"
-          optionLabel="name"
-          optionValue="id"
+          [options]="categoryOptions"
+          optionLabel="label"
+          optionValue="value"
+          optionDisabled="disabled"
           placeholder="Selecione uma categoria"
           [loading]="loadingCategories"
           [showClear]="true"
@@ -86,7 +76,6 @@
       </div>
 
       <div class="actions">
-
         <p-button
           type="button"
           label="Cancelar"
@@ -102,11 +91,7 @@
           [loading]="loading"
           [disabled]="form.invalid"
         />
-
       </div>
-
     </form>
-
   </div>
-
 </div>

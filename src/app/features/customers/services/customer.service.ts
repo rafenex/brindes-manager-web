@@ -23,6 +23,13 @@ export interface CustomerRequest {
   phone: string;
 }
 
+export interface CustomerDropdown {
+  id: number;
+  name: string;
+  companyName: string | null;
+  active: boolean;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -50,4 +57,10 @@ export class CustomerService {
   delete(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
+
+  findAllDropdown(): Observable<CustomerDropdown[]> {
+  return this.http.get<CustomerDropdown[]>(
+    `${this.apiUrl}/dropdown`
+  );
+}
 }

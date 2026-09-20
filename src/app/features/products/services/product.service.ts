@@ -23,54 +23,51 @@ export interface ProductRequest {
   categoryId: number;
 }
 
+export interface ProductDropdown {
+  id: number;
+  reference: string;
+  name: string;
+  basePrice: number;
+  active: boolean;
+}
+
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ProductService {
-
   private readonly apiUrl = 'http://localhost:8080/api/products';
 
-  constructor(private readonly http: HttpClient) {
-  }
+  constructor(private readonly http: HttpClient) {}
 
   findAll(categoryId?: number): Observable<Product[]> {
     if (categoryId) {
-      return this.http.get<Product[]>(
-        this.apiUrl,
-        {
-          params: {
-            categoryId
-          }
-        }
-      );
+      return this.http.get<Product[]>(this.apiUrl, {
+        params: {
+          categoryId,
+        },
+      });
     }
 
     return this.http.get<Product[]>(this.apiUrl);
   }
 
   findById(id: number): Observable<Product> {
-    return this.http.get<Product>(
-      `${this.apiUrl}/${id}`
-    );
+    return this.http.get<Product>(`${this.apiUrl}/${id}`);
   }
 
   create(request: ProductRequest): Observable<Product> {
-    return this.http.post<Product>(
-      this.apiUrl,
-      request
-    );
+    return this.http.post<Product>(this.apiUrl, request);
   }
 
   update(id: number, request: ProductRequest): Observable<Product> {
-    return this.http.put<Product>(
-      `${this.apiUrl}/${id}`,
-      request
-    );
+    return this.http.put<Product>(`${this.apiUrl}/${id}`, request);
   }
 
   delete(id: number): Observable<void> {
-    return this.http.delete<void>(
-      `${this.apiUrl}/${id}`
-    );
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
+
+  findAllDropdown(): Observable<ProductDropdown[]> {
+    return this.http.get<ProductDropdown[]>(`${this.apiUrl}/dropdown`);
   }
 }

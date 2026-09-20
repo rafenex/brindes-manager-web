@@ -1,9 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  FormBuilder,
-  ReactiveFormsModule,
-  Validators
-} from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { ButtonModule } from 'primeng/button';
@@ -12,14 +8,11 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { SelectModule } from 'primeng/select';
 import { TextareaModule } from 'primeng/textarea';
 
-import {
-  ProductRequest,
-  ProductService
-} from '../../services/product.service';
+import { ProductRequest, ProductService } from '../../services/product.service';
 
 import {
   Category,
-  CategoryService
+  CategoryService,
 } from '../../../categories/services/category.service';
 
 @Component({
@@ -30,16 +23,19 @@ import {
     InputTextModule,
     InputNumberModule,
     SelectModule,
-    TextareaModule
+    TextareaModule,
   ],
   templateUrl: './product-form.html',
-  styleUrl: './product-form.scss'
+  styleUrl: './product-form.scss',
 })
 export class ProductForm implements OnInit {
-
   productId: number | null = null;
 
-  categories: Category[] = [];
+  categoryOptions: {
+    label: string;
+    value: number;
+    disabled: boolean;
+  }[] = [];
 
   loading = false;
   loadingCategories = false;
@@ -57,11 +53,11 @@ export class ProductForm implements OnInit {
       reference: ['', Validators.required],
       name: ['', Validators.required],
       description: [''],
-      basePrice: [null as number | null, [
-        Validators.required,
-        Validators.min(0)
-      ]],
-      categoryId: [null as number | null, Validators.required]
+      basePrice: [
+        null as number | null,
+        [Validators.required, Validators.min(0)],
+      ],
+      categoryId: [null as number | null, Validators.required],
     });
 
     const id = this.route.snapshot.paramMap.get('id');
@@ -82,15 +78,20 @@ export class ProductForm implements OnInit {
   loadCategories(): void {
     this.loadingCategories = true;
 
-    this.categoryService.findAll().subscribe({
-      next: categories => {
-        this.categories = categories;
+    this.categoryService.findAllDropdown().subscribe({
+      next: (categories) => {
+        this.categoryOptions = categories.map((category) => ({
+          label: category.active ? category.name : `${category.name} (Inativa)`,
+          value: category.id,
+          disabled: !category.active,
+        }));
+
         this.loadingCategories = false;
       },
-      error: error => {
+      error: (error) => {
         console.error('Erro ao buscar categorias:', error);
         this.loadingCategories = false;
-      }
+      },
     });
   }
 
@@ -102,21 +103,21 @@ export class ProductForm implements OnInit {
     this.loading = true;
 
     this.productService.findById(this.productId).subscribe({
-      next: product => {
+      next: (product) => {
         this.form.patchValue({
           reference: product.reference,
           name: product.name,
           description: product.description ?? '',
           basePrice: product.basePrice,
-          categoryId: product.categoryId
+          categoryId: product.categoryId,
         });
 
         this.loading = false;
       },
-      error: error => {
+      error: (error) => {
         console.error('Erro ao buscar produto:', error);
         this.loading = false;
-      }
+      },
     });
   }
 
@@ -136,7 +137,7 @@ export class ProductForm implements OnInit {
       name: value.name ?? '',
       description: value.description ?? '',
       basePrice: value.basePrice,
-      categoryId: value.categoryId
+      categoryId: value.categoryId,
     };
 
     this.loading = true;
@@ -146,10 +147,10 @@ export class ProductForm implements OnInit {
         next: () => {
           this.router.navigate(['/products']);
         },
-        error: error => {
+        error: (error) => {
           console.error('Erro ao editar produto:', error);
           this.loading = false;
-        }
+        },
       });
 
       return;
@@ -159,10 +160,10 @@ export class ProductForm implements OnInit {
       next: () => {
         this.router.navigate(['/products']);
       },
-      error: error => {
+      error: (error) => {
         console.error('Erro ao cadastrar produto:', error);
         this.loading = false;
-      }
+      },
     });
   }
 
