@@ -55,15 +55,14 @@
           <div class="item-grid">
             <div class="field">
               <label>Produto *</label>
-
               <p-select
                 formControlName="productId"
-                [options]="products"
-                optionLabel="name"
-                optionValue="id"
+                [options]="productOptions"
+                optionLabel="label"
+                optionValue="value"
+                optionDisabled="disabled"
                 placeholder="Selecione um produto"
-                [filter]="true"
-                filterBy="name,reference"
+                appendTo="body"
                 (onChange)="onProductChange(i, $event.value)"
               />
             </div>

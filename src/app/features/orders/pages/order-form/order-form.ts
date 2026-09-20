@@ -19,7 +19,7 @@ import {
 } from '../../../customers/services/customer.service';
 
 import {
-  Product,
+  ProductDropdown,
   ProductService,
 } from '../../../products/services/product.service';
 
@@ -54,8 +54,12 @@ export class OrderForm implements OnInit {
   orderId: number | null = null;
 
   customers: Customer[] = [];
-  products: Product[] = [];
-
+  products: ProductDropdown[] = [];
+  productOptions: {
+    label: string;
+    value: number;
+    disabled: boolean;
+  }[] = [];
   loading = false;
 
   form: FormGroup;
@@ -140,9 +144,17 @@ export class OrderForm implements OnInit {
   }
 
   loadProducts(): void {
-    this.productService.findAll().subscribe({
+    this.productService.findAllDropdown().subscribe({
       next: (products) => {
         this.products = products;
+
+        this.productOptions = products.map((product) => ({
+          label: product.active
+            ? `${product.reference} - ${product.name}`
+            : `${product.reference} - ${product.name} (Inativo)`,
+          value: product.id,
+          disabled: !product.active,
+        }));
       },
       error: (error) => {
         console.error('Erro ao buscar produtos:', error);
@@ -249,24 +261,17 @@ export class OrderForm implements OnInit {
     this.router.navigate(['/orders']);
   }
 
-  onProductChange(index: number, productId: number | null): void {
-    if (!productId) {
-      return;
-    }
-
+  onProductChange(index: number, productId: number): void {
     const product = this.products.find((product) => product.id === productId);
 
     if (!product) {
       return;
     }
 
-    const itemForm = this.items.at(index) as FormGroup;
-
-    itemForm.patchValue({
+    this.items.at(index).patchValue({
       unitPrice: product.basePrice,
     });
   }
-
   getItemTotal(index: number): number {
     const itemForm = this.items.at(index) as FormGroup;
 
