@@ -1,0 +1,112 @@
+import { Component, OnInit } from '@angular/core';
+import { CurrencyPipe, DatePipe } from '@angular/common';
+import { Router } from '@angular/router';
+
+import { ButtonModule } from 'primeng/button';
+import { TableModule } from 'primeng/table';
+import { TagModule } from 'primeng/tag';
+
+import {
+  Order,
+  OrderService,
+  OrderStatus
+} from '../../services/order.service';
+
+@Component({
+  selector: 'app-order-list',
+  imports: [
+    TableModule,
+    ButtonModule,
+    TagModule,
+    CurrencyPipe,
+    DatePipe
+  ],
+  templateUrl: './order-list.html',
+  styleUrl: './order-list.scss'
+})
+export class OrderList implements OnInit {
+
+  orders: Order[] = [];
+  loading = true;
+
+  constructor(
+    private readonly orderService: OrderService,
+    private readonly router: Router
+  ) {
+  }
+
+  ngOnInit(): void {
+    this.loadOrders();
+  }
+
+  loadOrders(): void {
+    this.loading = true;
+
+    this.orderService.findAll().subscribe({
+      next: orders => {
+        this.orders = orders;
+        this.loading = false;
+      },
+      error: error => {
+        console.error('Erro ao buscar pedidos:', error);
+        this.loading = false;
+      }
+    });
+  }
+
+  newOrder(): void {
+    this.router.navigate(['/orders/new']);
+  }
+
+  editOrder(id: number): void {
+    this.router.navigate(['/orders', id, 'edit']);
+  }
+
+  deleteOrder(id: number): void {
+    const confirmed = window.confirm(
+      'Tem certeza que deseja excluir este pedido?'
+    );
+
+    if (!confirmed) {
+      return;
+    }
+
+    this.orderService.delete(id).subscribe({
+      next: () => {
+        this.loadOrders();
+      },
+      error: error => {
+        console.error('Erro ao excluir pedido:', error);
+      }
+    });
+  }
+
+  getStatusLabel(status: OrderStatus): string {
+    const labels: Record<OrderStatus, string> = {
+      BUDGET: 'Orçamento',
+      APPROVED: 'Aprovado',
+      IN_PRODUCTION: 'Em produção',
+      DELIVERED: 'Entregue',
+      CANCELED: 'Cancelado'
+    };
+
+    return labels[status];
+  }
+
+  getStatusSeverity(
+    status: OrderStatus
+  ): 'success' | 'info' | 'warn' | 'danger' | 'secondary' {
+    const severities: Record<
+      OrderStatus,
+      'success' | 'info' | 'warn' | 'danger' | 'secondary'
+    > = {
+      BUDGET: 'secondary',
+      APPROVED: 'info',
+      IN_PRODUCTION: 'warn',
+      DELIVERED: 'success',
+      CANCELED: 'danger'
+    };
+
+    return severities[status];
+  }
+}

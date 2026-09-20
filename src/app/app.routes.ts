@@ -12,6 +12,7 @@ import { CategoryList } from './features/categories/pages/category-list/category
 import { CategoryForm } from './features/categories/pages/category-form/category-form';
 import { ProductList } from './features/products/pages/product-list/product-list';
 import { ProductForm } from './features/products/pages/product-form/product-form';
+import { OrderList } from './features/orders/pages/order-list/order-list';
 
 export const routes: Routes = [
   {
@@ -67,6 +68,10 @@ export const routes: Routes = [
       {
         path: 'products',
         component: ProductList,
+      },
+      {
+        path: 'orders',
+        component: OrderList,
       },
     ],
   },
