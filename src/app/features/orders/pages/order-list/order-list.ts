@@ -7,17 +7,51 @@ import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 
 import { Order, OrderService, OrderStatus } from '../../services/order.service';
+import { FormsModule } from '@angular/forms';
+import { SelectModule } from 'primeng/select';
 
 @Component({
   selector: 'app-order-list',
-  imports: [TableModule, ButtonModule, TagModule, CurrencyPipe, DatePipe],
+  imports: [
+    TableModule,
+    ButtonModule,
+    TagModule,
+    CurrencyPipe,
+    DatePipe,
+    FormsModule,
+    SelectModule,
+  ],
   templateUrl: './order-list.html',
   styleUrl: './order-list.scss',
 })
 export class OrderList implements OnInit {
   orders: Order[] = [];
   loading = true;
-
+  statusOptions: {
+    label: string;
+    value: OrderStatus;
+  }[] = [
+    {
+      label: 'Orçamento',
+      value: 'BUDGET',
+    },
+    {
+      label: 'Aprovado',
+      value: 'APPROVED',
+    },
+    {
+      label: 'Em produção',
+      value: 'IN_PRODUCTION',
+    },
+    {
+      label: 'Entregue',
+      value: 'DELIVERED',
+    },
+    {
+      label: 'Cancelado',
+      value: 'CANCELED',
+    },
+  ];
   constructor(
     private readonly orderService: OrderService,
     private readonly router: Router

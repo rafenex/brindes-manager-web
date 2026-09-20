@@ -33,9 +33,13 @@
           <td>{{ order.customerName }}</td>
 
           <td>
-            <p-tag
-              [value]="getStatusLabel(order.status)"
-              [severity]="getStatusSeverity(order.status)"
+            <p-select
+              [options]="statusOptions"
+              optionLabel="label"
+              optionValue="value"
+              [ngModel]="order.status"
+              (onChange)="updateStatus(order.id, $event.value)"
+              appendTo="body"
             />
           </td>
 
@@ -49,13 +53,6 @@
               severity="secondary"
               [text]="true"
               (onClick)="editOrder(order.id)"
-            />
-
-            <p-button
-              icon="pi pi-check"
-              severity="success"
-              [text]="true"
-              (onClick)="updateStatus(order.id, 'APPROVED')"
             />
 
             <p-button
