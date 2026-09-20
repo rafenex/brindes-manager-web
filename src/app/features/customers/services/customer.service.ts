@@ -34,7 +34,7 @@ export interface CustomerDropdown {
   providedIn: 'root',
 })
 export class CustomerService {
-  private readonly apiUrl = 'http://localhost:8080/api/customers';
+  private readonly apiUrl = '/api/customers';
 
   constructor(private readonly http: HttpClient) {}
 

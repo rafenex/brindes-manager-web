@@ -26,7 +26,7 @@ export interface CategoryDropdown {
   providedIn: 'root',
 })
 export class CategoryService {
-  private readonly apiUrl = 'http://localhost:8080/api/categories';
+  private readonly apiUrl = '/api/categories';
 
   constructor(private readonly http: HttpClient) {}
 
