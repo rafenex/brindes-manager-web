@@ -45,7 +45,7 @@ interface OrderItemFormValue {
     InputNumberModule,
     SelectModule,
     TextareaModule,
-    CurrencyPipe
+    CurrencyPipe,
   ],
   templateUrl: './order-form.html',
   styleUrl: './order-form.scss',
@@ -59,6 +59,12 @@ export class OrderForm implements OnInit {
   loading = false;
 
   form: FormGroup;
+
+  customerOptions: {
+    label: string;
+    value: number;
+    disabled: boolean;
+  }[] = [];
 
   constructor(
     private readonly fb: FormBuilder,
@@ -119,9 +125,13 @@ export class OrderForm implements OnInit {
   }
 
   loadCustomers(): void {
-    this.customerService.findAll().subscribe({
+    this.customerService.findAllDropdown().subscribe({
       next: (customers) => {
-        this.customers = customers;
+        this.customerOptions = customers.map((customer) => ({
+          label: customer.active ? customer.name : `${customer.name} (Inativo)`,
+          value: customer.id,
+          disabled: !customer.active,
+        }));
       },
       error: (error) => {
         console.error('Erro ao buscar clientes:', error);
