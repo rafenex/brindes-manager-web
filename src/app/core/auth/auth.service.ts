@@ -15,6 +15,13 @@ export interface AuthResponse {
   role: string;
 }
 
+export interface RegisterRequest {
+  name: string;
+  companyName: string;
+  email: string;
+  password: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -48,4 +55,11 @@ export class AuthService {
   isAuthenticated(): boolean {
     return !!this.getToken();
   }
+
+  register(request: RegisterRequest): Observable<AuthResponse> {
+  return this.http.post<AuthResponse>(
+    `${this.apiUrl}/register`,
+    request
+  );
+}
 }

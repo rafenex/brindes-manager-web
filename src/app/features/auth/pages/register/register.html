@@ -1,0 +1,76 @@
+<div class="register-page">
+
+  <div class="register-card">
+
+    <div class="register-header">
+      <h1>Brindes Manager</h1>
+      <p>Crie sua conta e empresa</p>
+    </div>
+
+    <form
+      [formGroup]="form"
+      (ngSubmit)="cadastrar()"
+    >
+
+      <div class="field">
+        <label for="name">Seu nome</label>
+
+        <input
+          pInputText
+          id="name"
+          type="text"
+          formControlName="name"
+          placeholder="Digite seu nome"
+        />
+      </div>
+
+      <div class="field">
+        <label for="companyName">Empresa</label>
+
+        <input
+          pInputText
+          id="companyName"
+          type="text"
+          formControlName="companyName"
+          placeholder="Nome da empresa"
+        />
+      </div>
+
+      <div class="field">
+        <label for="email">E-mail</label>
+
+        <input
+          pInputText
+          id="email"
+          type="email"
+          formControlName="email"
+          placeholder="seu@email.com"
+        />
+      </div>
+
+      <div class="field">
+        <label for="password">Senha</label>
+
+        <p-password
+          inputId="password"
+          formControlName="password"
+          placeholder="Digite sua senha"
+          [feedback]="false"
+          [toggleMask]="true"
+          styleClass="password"
+        />
+      </div>
+
+      <p-button
+        type="submit"
+        label="Criar conta"
+        icon="pi pi-user-plus"
+        [disabled]="form.invalid"
+        styleClass="register-button"
+      />
+
+    </form>
+
+  </div>
+
+</div>

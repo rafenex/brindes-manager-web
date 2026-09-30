@@ -16,7 +16,7 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 export const appConfig: ApplicationConfig = {
   providers: [
     MessageService,
-    ConfirmationService ,
+    ConfirmationService,
     provideBrowserGlobalErrorListeners(),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
@@ -29,7 +29,7 @@ export const appConfig: ApplicationConfig = {
       theme: {
         preset: Aura,
         options: {
-          darkModeSelector: false,
+          darkModeSelector: '.app-dark',
         },
       },
       ripple: true,

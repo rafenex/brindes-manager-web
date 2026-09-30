@@ -14,11 +14,16 @@ import { ProductList } from './features/products/pages/product-list/product-list
 import { ProductForm } from './features/products/pages/product-form/product-form';
 import { OrderList } from './features/orders/pages/order-list/order-list';
 import { OrderForm } from './features/orders/pages/order-form/order-form';
+import { Register } from './features/auth/pages/register/register';
 
 export const routes: Routes = [
   {
     path: 'login',
     component: Login,
+  },
+  {
+    path: 'register',
+    component: Register,
   },
   {
     path: '',
