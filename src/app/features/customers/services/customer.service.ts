@@ -26,8 +26,9 @@ export interface CustomerRequest {
 }
 export interface CustomerDropdown {
   id: number;
-  name: string;
-  companyName: string | null;
+  name: string | null;
+  companyName: string;
+  address: string | null;
   active: boolean;
 }
 
