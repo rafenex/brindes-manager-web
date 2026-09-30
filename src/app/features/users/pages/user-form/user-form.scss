@@ -1,0 +1,63 @@
+.page {
+  min-height: 100vh;
+  padding: 2rem;
+  background: var(--p-surface-100);
+}
+
+.form-card {
+  max-width: 600px;
+  background: var(--p-surface-0);
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+}
+
+.form-header {
+  margin-bottom: 2rem;
+
+  h1 {
+    margin: 0;
+  }
+
+  p {
+    margin: 0.25rem 0 0;
+    color: var(--p-text-muted-color);
+  }
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+
+  input {
+    width: 100%;
+  }
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+}
+
+:host ::ng-deep {
+  .password {
+    width: 100%;
+  }
+
+  .password input {
+    width: 100%;
+  }
+}
+
+:host-context(.app-dark) {
+  .page {
+    background: var(--p-surface-950);
+  }
+
+  .form-card {
+    background: var(--p-surface-900);
+  }
+}

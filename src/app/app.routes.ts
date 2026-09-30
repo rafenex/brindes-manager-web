@@ -15,6 +15,9 @@ import { ProductForm } from './features/products/pages/product-form/product-form
 import { OrderList } from './features/orders/pages/order-list/order-list';
 import { OrderForm } from './features/orders/pages/order-form/order-form';
 import { Register } from './features/auth/pages/register/register';
+import { adminGuard } from './core/auth/admin.guard';
+import { UserForm } from './features/users/pages/user-form/user-form';
+import { UserList } from './features/users/pages/user-list/user-list';
 
 export const routes: Routes = [
   {
@@ -30,6 +33,16 @@ export const routes: Routes = [
     component: MainLayout,
     canActivate: [authGuard],
     children: [
+      {
+        path: 'users/new',
+        component: UserForm,
+        canActivate: [adminGuard],
+      },
+      {
+        path: 'users',
+        component: UserList,
+        canActivate: [adminGuard],
+      },
       {
         path: 'dashboard',
         component: Dashboard,

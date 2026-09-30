@@ -23,21 +23,16 @@ export interface RegisterRequest {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
-
   private readonly apiUrl = '/api/auth';
   private readonly tokenKey = 'brindes_token';
 
-  constructor(private readonly http: HttpClient) {
-  }
+  constructor(private readonly http: HttpClient) {}
 
   login(request: LoginRequest): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(
-      `${this.apiUrl}/login`,
-      request
-    );
+    return this.http.post<AuthResponse>(`${this.apiUrl}/login`, request);
   }
 
   saveToken(token: string): void {
@@ -57,9 +52,24 @@ export class AuthService {
   }
 
   register(request: RegisterRequest): Observable<AuthResponse> {
-  return this.http.post<AuthResponse>(
-    `${this.apiUrl}/register`,
-    request
-  );
-}
+    return this.http.post<AuthResponse>(`${this.apiUrl}/register`, request);
+  }
+
+  isAdmin(): boolean {
+    const token = this.getToken();
+
+    if (!token) {
+      return false;
+    }
+
+    try {
+      const payload = JSON.parse(
+        atob(token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')),
+      );
+
+      return payload.role === 'ADMIN';
+    } catch {
+      return false;
+    }
+  }
 }

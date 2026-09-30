@@ -9,6 +9,13 @@
     </div>
 
     <nav class="menu">
+      @if (authService.isAdmin()) {
+      <a routerLink="/users" routerLinkActive="active">
+        <i class="pi pi-user"></i>
+        Usuários
+      </a>
+      }
+
       <a routerLink="/dashboard" routerLinkActive="active">
         <i class="pi pi-home"></i>
         Dashboard

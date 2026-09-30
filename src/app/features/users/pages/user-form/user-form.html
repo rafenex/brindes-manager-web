@@ -1,0 +1,72 @@
+<div class="page">
+
+  <div class="form-card">
+
+    <div class="form-header">
+      <h1>Novo usuário</h1>
+      <p>Cadastre um usuário para sua empresa.</p>
+    </div>
+
+    <form
+      [formGroup]="form"
+      (ngSubmit)="save()"
+    >
+
+      <div class="field">
+        <label for="name">Nome</label>
+
+        <input
+          pInputText
+          id="name"
+          formControlName="name"
+          placeholder="Nome do usuário"
+        />
+      </div>
+
+      <div class="field">
+        <label for="email">E-mail</label>
+
+        <input
+          pInputText
+          id="email"
+          type="email"
+          formControlName="email"
+          placeholder="usuario@empresa.com"
+        />
+      </div>
+
+      <div class="field">
+        <label for="password">Senha</label>
+
+        <p-password
+          inputId="password"
+          formControlName="password"
+          placeholder="Senha inicial"
+          [feedback]="false"
+          [toggleMask]="true"
+          styleClass="password"
+        />
+      </div>
+
+      <div class="actions">
+        <p-button
+          type="button"
+          label="Cancelar"
+          severity="secondary"
+          [outlined]="true"
+          (onClick)="cancel()"
+        />
+
+        <p-button
+          type="submit"
+          label="Salvar"
+          icon="pi pi-check"
+          [disabled]="form.invalid"
+        />
+      </div>
+
+    </form>
+
+  </div>
+
+</div>
