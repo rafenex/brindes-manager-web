@@ -10,17 +10,24 @@ import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule, ButtonModule, InputTextModule, PasswordModule, RouterLink],
+  imports: [
+    ReactiveFormsModule,
+    ButtonModule,
+    InputTextModule,
+    PasswordModule,
+    RouterLink,
+  ],
   templateUrl: './login.html',
   styleUrl: './login.scss',
 })
 export class Login {
   form;
+  loginError = '';
 
   constructor(
     private readonly fb: FormBuilder,
     private readonly authService: AuthService,
-    private readonly router: Router
+    private readonly router: Router,
   ) {
     this.form = this.fb.nonNullable.group({
       email: ['', [Validators.required, Validators.email]],
@@ -33,16 +40,19 @@ export class Login {
       return;
     }
 
+    this.loginError = '';
+
     const request = this.form.getRawValue();
 
     this.authService.login(request).subscribe({
       next: (response) => {
         this.authService.saveToken(response.token);
-
         this.router.navigate(['/dashboard']);
       },
+
       error: (error) => {
-        console.error('Erro no login:', error);
+        this.loginError =
+          error.error?.messages?.[0] ?? 'Não foi possível realizar o login.';
       },
     });
   }
