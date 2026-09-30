@@ -1,0 +1,55 @@
+<div class="page">
+
+  <div class="page-header">
+    <div>
+      <h1>Usuários</h1>
+      <p>Gerencie os usuários da sua empresa.</p>
+    </div>
+
+    <p-button
+      label="Novo usuário"
+      icon="pi pi-plus"
+      (onClick)="newUser()"
+    />
+  </div>
+
+  <div class="table-card">
+
+    <p-table
+      [value]="users"
+      [loading]="loading"
+      [paginator]="true"
+      [rows]="10"
+    >
+
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Nome</th>
+          <th>E-mail</th>
+          <th>Perfil</th>
+          <th>Status</th>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-user>
+        <tr>
+          <td>{{ user.name }}</td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.role }}</td>
+          <td>{{ user.active ? 'Ativo' : 'Inativo' }}</td>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="4" class="empty">
+            Nenhum usuário cadastrado.
+          </td>
+        </tr>
+      </ng-template>
+
+    </p-table>
+
+  </div>
+
+</div>

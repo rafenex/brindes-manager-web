@@ -1,14 +1,15 @@
 .layout {
   min-height: 100vh;
   display: flex;
-  background: #f4f6f8;
+  background: var(--app-bg);
+  color: var(--app-text);
 }
 
 .sidebar {
   width: 250px;
   min-height: 100vh;
-  background: #ffffff;
-  border-right: 1px solid #e5e7eb;
+  background: var(--app-sidebar);
+  border-right: 1px solid var(--app-border);
 
   display: flex;
   flex-direction: column;
@@ -25,6 +26,7 @@
 
   font-size: 1.2rem;
   font-weight: 600;
+  color: var(--app-text);
 
   i {
     font-size: 1.5rem;
@@ -43,21 +45,24 @@
 
     padding: 0.8rem 1rem;
 
-    color: #4b5563;
+    color: var(--app-muted);
     text-decoration: none;
 
     border-radius: 8px;
     cursor: pointer;
 
-    transition: background 0.2s;
+    transition:
+      background 0.2s,
+      color 0.2s;
 
     &:hover {
-      background: #f3f4f6;
+      background: var(--app-hover);
+      color: var(--app-text);
     }
 
     &.active {
-      background: #eef2ff;
-      color: #4f46e5;
+      background: var(--app-active-bg);
+      color: var(--app-active-text);
       font-weight: 500;
     }
   }
@@ -65,9 +70,33 @@
 
 .sidebar-footer {
   margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  align-items: flex-start;
 }
 
 .content {
   flex: 1;
   min-width: 0;
+  background: var(--app-bg);
+}
+
+.topbar {
+  padding: 1.5rem 2rem;
+  background: var(--app-surface);
+  border-bottom: 1px solid var(--app-border);
+
+  h2 {
+    margin: 0;
+    font-size: 1.25rem;
+    color: var(--app-text);
+  }
+
+  span {
+    display: block;
+    margin-top: 0.25rem;
+    color: var(--app-muted);
+    font-size: 0.9rem;
+  }
 }

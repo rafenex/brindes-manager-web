@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
+import { ThemeService } from './core/theme/theme.service';
+
 @Component({
   selector: 'app-root',
   imports: [
@@ -9,4 +11,10 @@ import { RouterOutlet } from '@angular/router';
   template: '<router-outlet />'
 })
 export class App {
+
+  constructor(
+    private readonly themeService: ThemeService
+  ) {
+    this.themeService.initialize();
+  }
 }

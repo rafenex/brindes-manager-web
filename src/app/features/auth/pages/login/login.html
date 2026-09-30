@@ -1,17 +1,11 @@
 <div class="login-page">
-
   <div class="login-card">
-
     <div class="login-header">
       <h1>Brindes Manager</h1>
       <p>Entre na sua conta</p>
     </div>
 
-    <form
-      [formGroup]="form"
-      (ngSubmit)="entrar()"
-    >
-
+    <form [formGroup]="form" (ngSubmit)="entrar()">
       <div class="field">
         <label for="email">E-mail</label>
 
@@ -44,9 +38,11 @@
         [disabled]="form.invalid"
         styleClass="login-button"
       />
-
     </form>
 
+    <div class="register-link">
+      <span>Não possui uma conta?</span>
+      <a routerLink="/register">Criar conta</a>
+    </div>
   </div>
-
 </div>

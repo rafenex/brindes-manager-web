@@ -1,12 +1,16 @@
 .page {
+  min-height: 100vh;
   padding: 2rem;
+  background: var(--app-bg);
+  color: var(--app-text);
 }
 
 .form-card {
   max-width: 1000px;
   margin: 0 auto;
-  background: #ffffff;
+  background: var(--app-surface);
   padding: 2rem;
+  border: 1px solid var(--app-border);
   border-radius: 12px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
 }
@@ -16,11 +20,12 @@
 
   h1 {
     margin: 0;
+    color: var(--app-text);
   }
 
   p {
     margin: 0.25rem 0 0;
-    color: #6b7280;
+    color: var(--app-muted);
   }
 }
 
@@ -32,6 +37,7 @@
 
   label {
     font-weight: 500;
+    color: var(--app-text);
   }
 
   input,
@@ -56,11 +62,9 @@
 .item-card {
   padding: 1.25rem;
   margin-bottom: 1rem;
-
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--app-border);
   border-radius: 10px;
-
-  background: #f9fafb;
+  background: var(--app-surface-secondary);
 }
 
 .item-grid {
@@ -92,16 +96,6 @@
   }
 }
 
-@media (max-width: 900px) {
-  .item-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .remove {
-    padding-bottom: 0;
-  }
-}
-
 .item-total {
   display: flex;
   justify-content: flex-end;
@@ -119,7 +113,7 @@
   margin-top: 2rem;
   padding-top: 1.5rem;
 
-  border-top: 1px solid #e5e7eb;
+  border-top: 1px solid var(--app-border);
 
   span {
     font-size: 1.1rem;
@@ -127,5 +121,15 @@
 
   strong {
     font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 900px) {
+  .item-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .remove {
+    padding-bottom: 0;
   }
 }

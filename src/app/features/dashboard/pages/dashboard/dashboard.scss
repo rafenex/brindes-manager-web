@@ -1,7 +1,10 @@
 .dashboard {
   width: 100%;
+  min-height: 100vh;
   padding: 2rem;
   box-sizing: border-box;
+  background: var(--app-bg);
+  color: var(--app-text);
 }
 
 .header {
@@ -11,12 +14,12 @@
     margin: 0;
     font-size: 2rem;
     font-weight: 700;
-    color: #111827;
+    color: var(--app-text);
   }
 
   p {
     margin: 0.25rem 0 0;
-    color: #6b7280;
+    color: var(--app-muted);
   }
 }
 
@@ -33,11 +36,11 @@
 
   padding: 1.5rem;
 
-  background: #ffffff;
-  border: 1px solid #e5e7eb;
+  background: var(--app-surface);
+  border: 1px solid var(--app-border);
   border-radius: 12px;
 
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 
   > span {
     display: flex;
@@ -48,9 +51,9 @@
     height: 48px;
 
     border-radius: 10px;
-    background: #eef2ff;
+    background: var(--app-active-bg);
 
-    color: #4f46e5;
+    color: var(--app-active-text);
     font-size: 1.4rem;
   }
 
@@ -62,12 +65,12 @@
 
   small {
     font-size: 0.9rem;
-    color: #6b7280;
+    color: var(--app-muted);
   }
 
   strong {
     font-size: 1.8rem;
-    color: #111827;
+    color: var(--app-text);
   }
 }
 

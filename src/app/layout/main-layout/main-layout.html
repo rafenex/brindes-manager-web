@@ -9,6 +9,13 @@
     </div>
 
     <nav class="menu">
+      @if (authService.isAdmin()) {
+      <a routerLink="/users" routerLinkActive="active">
+        <i class="pi pi-user"></i>
+        Usuários
+      </a>
+      }
+
       <a routerLink="/dashboard" routerLinkActive="active">
         <i class="pi pi-home"></i>
         Dashboard
@@ -36,6 +43,14 @@
 
     <div class="sidebar-footer">
       <p-button
+        [label]="themeService.isDark() ? 'Tema claro' : 'Tema escuro'"
+        [icon]="themeService.isDark() ? 'pi pi-sun' : 'pi pi-moon'"
+        severity="secondary"
+        [text]="true"
+        (onClick)="themeService.toggle()"
+      />
+
+      <p-button
         label="Sair"
         icon="pi pi-sign-out"
         severity="secondary"
@@ -46,6 +61,15 @@
   </aside>
 
   <main class="content">
+    <header class="topbar">
+      <div>
+        <h2>Olá, {{ authService.getUserName() }} 👋</h2>
+        <span>
+          {{ authService.getCompanyName() }} • {{ authService.getRoleLabel() }}
+        </span>
+      </div>
+    </header>
+
     <router-outlet />
   </main>
 </div>

@@ -11,6 +11,7 @@ import { ButtonModule } from 'primeng/button';
 import { AuthService } from '../../core/auth/auth.service';
 import { ToastModule } from 'primeng/toast';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ThemeService } from '../../core/theme/theme.service';
 
 @Component({
   selector: 'app-main-layout',
@@ -28,7 +29,8 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 export class MainLayout {
 
   constructor(
-    private readonly authService: AuthService,
+    public readonly authService: AuthService,
+    public readonly themeService: ThemeService,
     private readonly router: Router
   ) {
   }
