@@ -61,6 +61,15 @@
   </aside>
 
   <main class="content">
+    <header class="topbar">
+      <div>
+        <h2>Olá, {{ authService.getUserName() }} 👋</h2>
+        <span>
+          {{ authService.getCompanyName() }} • {{ authService.getRoleLabel() }}
+        </span>
+      </div>
+    </header>
+
     <router-outlet />
   </main>
 </div>

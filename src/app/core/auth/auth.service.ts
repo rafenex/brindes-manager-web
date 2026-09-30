@@ -25,6 +25,8 @@ export interface RegisterRequest {
 interface JwtPayload {
   exp: number;
   role: string;
+  name: string;
+  companyName: string;
 }
 
 @Injectable({
@@ -93,5 +95,19 @@ export class AuthService {
     } catch {
       return null;
     }
+  }
+
+  getUserName(): string {
+    return this.getTokenPayload()?.name ?? '';
+  }
+
+  getCompanyName(): string {
+    return this.getTokenPayload()?.companyName ?? '';
+  }
+
+  getRoleLabel(): string {
+    const role = this.getTokenPayload()?.role;
+
+    return role === 'ADMIN' ? 'Administrador' : 'Usuário';
   }
 }
