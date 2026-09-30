@@ -4,8 +4,9 @@ import { Observable } from 'rxjs';
 
 export interface Customer {
   id: number;
-  name: string;
-  companyName: string | null;
+  name: string | null;
+  companyName: string;
+  address: string | null;
   document: string | null;
   email: string | null;
   phone: string | null;
@@ -18,11 +19,11 @@ export interface Customer {
 export interface CustomerRequest {
   name: string;
   companyName: string;
+  address: string;
   document: string;
   email: string;
   phone: string;
 }
-
 export interface CustomerDropdown {
   id: number;
   name: string;
@@ -59,8 +60,6 @@ export class CustomerService {
   }
 
   findAllDropdown(): Observable<CustomerDropdown[]> {
-  return this.http.get<CustomerDropdown[]>(
-    `${this.apiUrl}/dropdown`
-  );
-}
+    return this.http.get<CustomerDropdown[]>(`${this.apiUrl}/dropdown`);
+  }
 }

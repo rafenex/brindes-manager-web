@@ -13,24 +13,35 @@
 
     <form [formGroup]="form" (ngSubmit)="save()">
       <div class="field">
-        <label for="name">Nome *</label>
-
-        <input
-          pInputText
-          id="name"
-          formControlName="name"
-          placeholder="Nome do cliente"
-        />
-      </div>
-
-      <div class="field">
-        <label for="companyName">Empresa</label>
+        <label for="companyName">Empresa *</label>
 
         <input
           pInputText
           id="companyName"
           formControlName="companyName"
           placeholder="Nome da empresa"
+        />
+      </div>
+
+      <div class="field">
+        <label for="name">Nome do contato</label>
+
+        <input
+          pInputText
+          id="name"
+          formControlName="name"
+          placeholder="Nome da pessoa de contato"
+        />
+      </div>
+
+      <div class="field">
+        <label for="address">Endereço</label>
+
+        <input
+          pInputText
+          id="address"
+          formControlName="address"
+          placeholder="Ex: Rua das Flores, 123 - Centro - São Paulo/SP"
         />
       </div>
 
