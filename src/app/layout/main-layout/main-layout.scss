@@ -7,7 +7,12 @@
 
 .sidebar {
   width: 250px;
-  min-height: 100vh;
+  height: 100vh;
+  flex-shrink: 0;
+
+  position: sticky;
+  top: 0;
+
   background: var(--app-sidebar);
   border-right: 1px solid var(--app-border);
 
@@ -49,6 +54,7 @@
     text-decoration: none;
 
     border-radius: 8px;
+
     cursor: pointer;
 
     transition:
@@ -68,25 +74,25 @@
   }
 }
 
-.sidebar-footer {
-  margin-top: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-  align-items: flex-start;
-}
-
 .content {
   flex: 1;
   min-width: 0;
+
   background: var(--app-bg);
 }
 
 .topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
   padding: 1.5rem 2rem;
+
   background: var(--app-surface);
   border-bottom: 1px solid var(--app-border);
+}
 
+.topbar-user {
   h2 {
     margin: 0;
     font-size: 1.25rem;
@@ -96,7 +102,14 @@
   span {
     display: block;
     margin-top: 0.25rem;
+
     color: var(--app-muted);
     font-size: 0.9rem;
   }
+}
+
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
