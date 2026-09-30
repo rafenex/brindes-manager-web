@@ -1,9 +1,5 @@
 import { Component } from '@angular/core';
-import {
-  FormBuilder,
-  ReactiveFormsModule,
-  Validators
-} from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { ButtonModule } from 'primeng/button';
@@ -13,16 +9,11 @@ import { CustomerService } from '../../services/customer.service';
 
 @Component({
   selector: 'app-customer-form',
-  imports: [
-    ReactiveFormsModule,
-    ButtonModule,
-    InputTextModule
-  ],
+  imports: [ReactiveFormsModule, ButtonModule, InputTextModule],
   templateUrl: './customer-form.html',
-  styleUrl: './customer-form.scss'
+  styleUrl: './customer-form.scss',
 })
 export class CustomerForm {
-
   form;
   loading = false;
   customerId: number | null = null;
@@ -31,16 +22,16 @@ export class CustomerForm {
     private readonly fb: FormBuilder,
     private readonly customerService: CustomerService,
     private readonly router: Router,
-    private readonly route: ActivatedRoute
+    private readonly route: ActivatedRoute,
   ) {
     this.form = this.fb.nonNullable.group({
-      name: ['', Validators.required],
-      companyName: [''],
+      companyName: ['', Validators.required],
+      name: [''],
+      address: [''],
       document: [''],
       email: ['', Validators.email],
-      phone: ['']
+      phone: [''],
     });
-
     const id = this.route.snapshot.paramMap.get('id');
 
     if (id) {
@@ -57,21 +48,22 @@ export class CustomerForm {
     this.loading = true;
 
     this.customerService.findById(this.customerId).subscribe({
-      next: customer => {
+      next: (customer) => {
         this.form.patchValue({
-          name: customer.name,
           companyName: customer.companyName ?? '',
+          name: customer.name ?? '',
+          address: customer.address ?? '',
           document: customer.document ?? '',
           email: customer.email ?? '',
-          phone: customer.phone ?? ''
+          phone: customer.phone ?? '',
         });
 
         this.loading = false;
       },
-      error: error => {
+      error: (error) => {
         console.error('Erro ao buscar cliente:', error);
         this.loading = false;
-      }
+      },
     });
   }
 
@@ -89,10 +81,10 @@ export class CustomerForm {
         next: () => {
           this.router.navigate(['/customers']);
         },
-        error: error => {
+        error: (error) => {
           console.error('Erro ao editar cliente:', error);
           this.loading = false;
-        }
+        },
       });
 
       return;
@@ -102,10 +94,10 @@ export class CustomerForm {
       next: () => {
         this.router.navigate(['/customers']);
       },
-      error: error => {
+      error: (error) => {
         console.error('Erro ao cadastrar cliente:', error);
         this.loading = false;
-      }
+      },
     });
   }
 
