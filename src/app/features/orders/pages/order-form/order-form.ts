@@ -15,6 +15,7 @@ import { TextareaModule } from 'primeng/textarea';
 
 import {
   Customer,
+  CustomerDropdown,
   CustomerService,
 } from '../../../customers/services/customer.service';
 
@@ -52,8 +53,8 @@ interface OrderItemFormValue {
 })
 export class OrderForm implements OnInit {
   orderId: number | null = null;
-
-  customers: Customer[] = [];
+  selectedCustomerAddress: string | null = null;
+  customers: CustomerDropdown[] = [];
   products: ProductDropdown[] = [];
   productOptions: {
     label: string;
@@ -76,7 +77,7 @@ export class OrderForm implements OnInit {
     private readonly customerService: CustomerService,
     private readonly productService: ProductService,
     private readonly router: Router,
-    private readonly route: ActivatedRoute
+    private readonly route: ActivatedRoute,
   ) {
     this.form = this.fb.group({
       customerId: [null as number | null, Validators.required],
@@ -131,8 +132,12 @@ export class OrderForm implements OnInit {
   loadCustomers(): void {
     this.customerService.findAllDropdown().subscribe({
       next: (customers) => {
+        this.customers = customers as any;
+
         this.customerOptions = customers.map((customer) => ({
-          label: customer.active ? customer.name : `${customer.name} (Inativo)`,
+          label: customer.active
+            ? customer.companyName
+            : `${customer.companyName} (Inativo)`,
           value: customer.id,
           disabled: !customer.active,
         }));
@@ -175,7 +180,7 @@ export class OrderForm implements OnInit {
           customerId: order.customerId,
           notes: order.notes ?? '',
         });
-
+        this.onCustomerChange(order.customerId);
         this.items.clear();
 
         order.items.forEach((item) => {
@@ -191,7 +196,7 @@ export class OrderForm implements OnInit {
                 [Validators.required, Validators.min(0.01)],
               ],
               customDescription: [item.customDescription ?? ''],
-            })
+            }),
           );
         });
 
@@ -284,7 +289,15 @@ export class OrderForm implements OnInit {
   getOrderTotal(): number {
     return this.items.controls.reduce(
       (total, _, index) => total + this.getItemTotal(index),
-      0
+      0,
     );
+  }
+
+  onCustomerChange(customerId: number): void {
+    const customer = this.customers.find(
+      (customer) => customer.id === customerId,
+    );
+
+    this.selectedCustomerAddress = customer?.address ?? null;
   }
 }

@@ -11,7 +11,7 @@
 
     <form [formGroup]="form" (ngSubmit)="save()">
       <div class="field">
-        <label for="customerId">Cliente *</label>
+        <label for="customerId">Empresa *</label>
 
         <p-select
           formControlName="customerId"
@@ -19,10 +19,20 @@
           optionLabel="label"
           optionValue="value"
           optionDisabled="disabled"
-          placeholder="Selecione um cliente"
+          placeholder="Selecione uma empresa"
+          [filter]="true"
+          filterBy="label"
           appendTo="body"
+          (onChange)="onCustomerChange($event.value)"
         />
       </div>
+
+      @if (selectedCustomerAddress) {
+      <small class="customer-address">
+        <i class="pi pi-map-marker"></i>
+        {{ selectedCustomerAddress }}
+      </small>
+      }
 
       <div class="field">
         <label for="notes">Observação</label>
