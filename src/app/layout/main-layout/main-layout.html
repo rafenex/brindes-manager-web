@@ -41,32 +41,34 @@
       </a>
     </nav>
 
-    <div class="sidebar-footer">
-      <p-button
-        [label]="themeService.isDark() ? 'Tema claro' : 'Tema escuro'"
-        [icon]="themeService.isDark() ? 'pi pi-sun' : 'pi pi-moon'"
-        severity="secondary"
-        [text]="true"
-        (onClick)="themeService.toggle()"
-      />
-
-      <p-button
-        label="Sair"
-        icon="pi pi-sign-out"
-        severity="secondary"
-        [text]="true"
-        (onClick)="logout()"
-      />
-    </div>
   </aside>
 
   <main class="content">
     <header class="topbar">
-      <div>
+      <div class="topbar-user">
         <h2>Olá, {{ authService.getUserName() }} 👋</h2>
+
         <span>
           {{ authService.getCompanyName() }} • {{ authService.getRoleLabel() }}
         </span>
+      </div>
+
+      <div class="topbar-actions">
+        <p-button
+          [label]="themeService.isDark() ? 'Tema claro' : 'Tema escuro'"
+          [icon]="themeService.isDark() ? 'pi pi-sun' : 'pi pi-moon'"
+          severity="secondary"
+          [text]="true"
+          (onClick)="themeService.toggle()"
+        />
+
+        <p-button
+          label="Sair"
+          icon="pi pi-sign-out"
+          severity="secondary"
+          [text]="true"
+          (onClick)="logout()"
+        />
       </div>
     </header>
 
