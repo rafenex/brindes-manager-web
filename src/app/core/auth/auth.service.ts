@@ -22,6 +22,11 @@ export interface RegisterRequest {
   password: string;
 }
 
+interface JwtPayload {
+  exp: number;
+  role: string;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -48,7 +53,20 @@ export class AuthService {
   }
 
   isAuthenticated(): boolean {
-    return !!this.getToken();
+    const payload = this.getTokenPayload();
+
+    if (!payload) {
+      return false;
+    }
+
+    const expired = payload.exp * 1000 <= Date.now();
+
+    if (expired) {
+      this.logout();
+      return false;
+    }
+
+    return true;
   }
 
   register(request: RegisterRequest): Observable<AuthResponse> {
@@ -56,20 +74,24 @@ export class AuthService {
   }
 
   isAdmin(): boolean {
+    const payload = this.getTokenPayload();
+
+    return payload?.role === 'ADMIN';
+  }
+
+  private getTokenPayload(): JwtPayload | null {
     const token = this.getToken();
 
     if (!token) {
-      return false;
+      return null;
     }
 
     try {
-      const payload = JSON.parse(
-        atob(token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')),
-      );
+      const payload = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
 
-      return payload.role === 'ADMIN';
+      return JSON.parse(atob(payload));
     } catch {
-      return false;
+      return null;
     }
   }
 }
