@@ -1,5 +1,8 @@
 .page {
+  min-height: 100vh;
   padding: 2rem;
+  background: var(--app-bg);
+  color: var(--app-text);
 }
 
 .page-header {
@@ -10,17 +13,19 @@
 
   h1 {
     margin: 0;
+    color: var(--app-text);
   }
 
   p {
     margin: 0.25rem 0 0;
-    color: #6b7280;
+    color: var(--app-muted);
   }
 }
 
 .table-card {
-  background: #ffffff;
+  background: var(--app-surface);
   padding: 1rem;
+  border: 1px solid var(--app-border);
   border-radius: 12px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
   overflow-x: auto;
@@ -34,5 +39,5 @@
 .empty {
   text-align: center;
   padding: 2rem;
-  color: #6b7280;
+  color: var(--app-muted);
 }

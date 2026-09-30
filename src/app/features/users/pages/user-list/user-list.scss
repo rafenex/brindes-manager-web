@@ -1,7 +1,8 @@
 .page {
   min-height: 100vh;
   padding: 2rem;
-  background: var(--p-surface-100);
+  background: var(--app-bg);
+  color: var(--app-text);
 }
 
 .page-header {
@@ -12,17 +13,19 @@
 
   h1 {
     margin: 0;
+    color: var(--app-text);
   }
 
   p {
     margin: 0.25rem 0 0;
-    color: var(--p-text-muted-color);
+    color: var(--app-muted);
   }
 }
 
 .table-card {
-  background: var(--p-surface-0);
+  background: var(--app-surface);
   padding: 1rem;
+  border: 1px solid var(--app-border);
   border-radius: 12px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
 }
@@ -30,15 +33,5 @@
 .empty {
   text-align: center;
   padding: 2rem;
-  color: var(--p-text-muted-color);
-}
-
-:host-context(.app-dark) {
-  .page {
-    background: var(--p-surface-950);
-  }
-
-  .table-card {
-    background: var(--p-surface-900);
-  }
+  color: var(--app-muted);
 }

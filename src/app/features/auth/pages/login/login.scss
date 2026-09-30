@@ -4,15 +4,17 @@
   align-items: center;
   justify-content: center;
   padding: 1rem;
-  background: var(--p-surface-100);
+  background: var(--app-bg);
+  color: var(--app-text);
 }
 
 .login-card {
   width: 100%;
   max-width: 400px;
-  background: var(--p-surface-0);
+  background: var(--app-surface);
   padding: 2rem;
   border-radius: 12px;
+  border: 1px solid var(--app-border);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 }
 
@@ -22,11 +24,12 @@
 
   h1 {
     margin: 0 0 0.5rem;
+    color: var(--app-text);
   }
 
   p {
     margin: 0;
-    color: #6b7280;
+    color: var(--app-muted);
   }
 }
 
@@ -38,6 +41,7 @@
 
   label {
     font-weight: 500;
+    color: var(--app-text);
   }
 
   input {
@@ -70,21 +74,12 @@
 
   span {
     margin-right: 0.35rem;
-    color: #6b7280;
+    color: var(--app-muted);
   }
 
   a {
     text-decoration: none;
     font-weight: 600;
-  }
-}
-
-:host-context(.app-dark) {
-  .login-page {
-    background: var(--p-surface-950);
-  }
-
-  .login-card {
-    background: var(--p-surface-900);
+    color: var(--app-active-text);
   }
 }

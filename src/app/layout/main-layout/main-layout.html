@@ -43,6 +43,14 @@
 
     <div class="sidebar-footer">
       <p-button
+        [label]="themeService.isDark() ? 'Tema claro' : 'Tema escuro'"
+        [icon]="themeService.isDark() ? 'pi pi-sun' : 'pi pi-moon'"
+        severity="secondary"
+        [text]="true"
+        (onClick)="themeService.toggle()"
+      />
+
+      <p-button
         label="Sair"
         icon="pi pi-sign-out"
         severity="secondary"
