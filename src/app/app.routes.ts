@@ -18,6 +18,7 @@ import { Register } from './features/auth/pages/register/register';
 import { adminGuard } from './core/auth/admin.guard';
 import { UserForm } from './features/users/pages/user-form/user-form';
 import { UserList } from './features/users/pages/user-list/user-list';
+import { CompanySettings } from './features/company/pages/company-settings/company-settings';
 
 export const routes: Routes = [
   {
@@ -33,6 +34,11 @@ export const routes: Routes = [
     component: MainLayout,
     canActivate: [authGuard],
     children: [
+      {
+        path: 'company',
+        component: CompanySettings,
+        canActivate: [adminGuard],
+      },
       {
         path: 'users/new',
         component: UserForm,
