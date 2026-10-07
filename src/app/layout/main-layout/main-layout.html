@@ -3,9 +3,13 @@
 <div class="layout">
   <aside class="sidebar">
     <div class="logo">
-      <i class="pi pi-gift"></i>
+      @if (logoUrl) {
+        <img [src]="logoUrl" [alt]="company?.name || 'Brindes Manager'" />
+      } @else {
+        <i class="pi pi-gift"></i>
+      }
 
-      <span> Brindes Manager </span>
+      <span>{{ company?.name || 'Brindes Manager' }}</span>
     </div>
 
     <nav class="menu">
@@ -53,7 +57,7 @@
         <h2>Olá, {{ authService.getUserName() }} 👋</h2>
 
         <span>
-          {{ authService.getCompanyName() }} • {{ authService.getRoleLabel() }}
+          {{ company?.name || authService.getCompanyName() }} • {{ authService.getRoleLabel() }}
         </span>
       </div>
 
