@@ -1,0 +1,76 @@
+<div class="page">
+  <div class="form-card">
+    <div class="header">
+      <h1>Configurações da empresa</h1>
+      <p>Atualize os dados e a identidade visual da empresa.</p>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="save()">
+      <div class="field">
+        <label for="name">Nome da empresa *</label>
+        <input pInputText id="name" formControlName="name" />
+      </div>
+
+      <div class="field">
+        <label for="address">Endereço</label>
+        <input pInputText id="address" formControlName="address" />
+      </div>
+
+      <div class="field">
+        <label for="email">E-mail</label>
+        <input pInputText id="email" type="email" formControlName="email" />
+      </div>
+
+      <div class="field">
+        <label for="phone">Telefone</label>
+        <input pInputText id="phone" formControlName="phone" />
+      </div>
+
+      <div class="actions">
+        <p-button
+          type="submit"
+          label="Salvar dados"
+          icon="pi pi-check"
+          [loading]="loading"
+          [disabled]="form.invalid"
+        />
+      </div>
+    </form>
+
+    <div class="logo-section">
+      <h2>Logo da empresa</h2>
+
+      @if (logoPreviewUrl) {
+        <div class="logo-preview">
+          <img [src]="logoPreviewUrl" alt="Logo da empresa" />
+        </div>
+      }
+
+      <input
+        type="file"
+        accept="image/png,image/jpeg,image/webp"
+        (change)="onLogoSelected($event)"
+      />
+
+      <div class="logo-actions">
+        <p-button
+          label="Salvar logo"
+          icon="pi pi-upload"
+          [loading]="logoLoading"
+          [disabled]="!selectedLogo"
+          (onClick)="saveLogo()"
+        />
+
+        @if (logoPreviewUrl && !selectedLogo) {
+          <p-button
+            label="Remover logo"
+            icon="pi pi-trash"
+            severity="danger"
+            [outlined]="true"
+            (onClick)="deleteLogo()"
+          />
+        }
+      </div>
+    </div>
+  </div>
+</div>
