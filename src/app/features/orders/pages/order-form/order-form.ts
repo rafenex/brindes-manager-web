@@ -14,7 +14,6 @@ import { SelectModule } from 'primeng/select';
 import { TextareaModule } from 'primeng/textarea';
 
 import {
-  Customer,
   CustomerDropdown,
   CustomerService,
 } from '../../../customers/services/customer.service';
@@ -132,7 +131,8 @@ export class OrderForm implements OnInit {
   loadCustomers(): void {
     this.customerService.findAllDropdown().subscribe({
       next: (customers) => {
-        this.customers = customers as any;
+        this.customers = customers;
+        this.onCustomerChange(this.form.controls['customerId'].value);
 
         this.customerOptions = customers.map((customer) => ({
           label: customer.active
@@ -293,11 +293,23 @@ export class OrderForm implements OnInit {
     );
   }
 
-  onCustomerChange(customerId: number): void {
+  onCustomerChange(customerId: number | null): void {
     const customer = this.customers.find(
       (customer) => customer.id === customerId,
     );
 
-    this.selectedCustomerAddress = customer?.address ?? null;
+    if (!customer) {
+      this.selectedCustomerAddress = null;
+      return;
+    }
+    const text = (value: string | null) => value?.trim() ?? '';
+    const street = [text(customer.street), text(customer.number)].filter(Boolean).join(', ');
+    const city = [text(customer.city), text(customer.state)].filter(Boolean).join('/');
+    const rawCode = customer.postalCode ?? '';
+    const code = /^[0-9]{8}$/.test(rawCode)
+      ? `${rawCode.slice(0, 5)}-${rawCode.slice(5)}` : rawCode;
+    this.selectedCustomerAddress = [street, text(customer.complement),
+      text(customer.neighborhood), city, code ? `CEP ${code}` : '']
+      .filter(Boolean).join(' — ') || null;
   }
 }

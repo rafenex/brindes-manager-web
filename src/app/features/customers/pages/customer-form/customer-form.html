@@ -12,6 +12,8 @@
     </div>
 
     <form [formGroup]="form" (ngSubmit)="save()">
+      <p role="status" aria-live="polite">{{ formNotice }}</p>
+      <fieldset [disabled]="loading || saving">
       <div class="field">
         <label for="companyName">Empresa *</label>
 
@@ -35,14 +37,37 @@
       </div>
 
       <div class="field">
-        <label for="address">Endereço</label>
-
-        <input
-          pInputText
-          id="address"
-          formControlName="address"
-          placeholder="Ex: Rua das Flores, 123 - Centro - São Paulo/SP"
-        />
+        <label for="postalCode">CEP</label>
+        <input pInputText id="postalCode" formControlName="postalCode"
+          autocomplete="postal-code" placeholder="00000-000"
+          aria-describedby="postal-code-notice" (blur)="onPostalCodeBlur()" />
+        <small id="postal-code-notice" role="status" aria-live="polite" aria-atomic="true">
+          {{ lookupLoading ? 'Consultando CEP…' : postalCodeNotice }}
+        </small>
+      </div>
+      <div class="field">
+        <label for="street">Logradouro</label>
+        <input pInputText id="street" formControlName="street" autocomplete="address-line1" />
+      </div>
+      <div class="field">
+        <label for="number">Número</label>
+        <input pInputText id="number" formControlName="number" autocomplete="off" />
+      </div>
+      <div class="field">
+        <label for="complement">Complemento</label>
+        <input pInputText id="complement" formControlName="complement" autocomplete="address-line2" />
+      </div>
+      <div class="field">
+        <label for="neighborhood">Bairro</label>
+        <input pInputText id="neighborhood" formControlName="neighborhood" autocomplete="off" />
+      </div>
+      <div class="field">
+        <label for="city">Cidade</label>
+        <input pInputText id="city" formControlName="city" autocomplete="address-level2" />
+      </div>
+      <div class="field">
+        <label for="state">UF</label>
+        <input pInputText id="state" formControlName="state" autocomplete="address-level1" />
       </div>
 
       <div class="field">
@@ -79,6 +104,7 @@
         />
       </div>
 
+      </fieldset>
       <div class="actions">
         <p-button
           type="button"
@@ -92,8 +118,8 @@
           type="submit"
           label="Salvar"
           icon="pi pi-check"
-          [loading]="loading"
-          [disabled]="form.invalid"
+          [loading]="saving"
+          [disabled]="loading || saving || form.invalid"
         />
       </div>
     </form>
