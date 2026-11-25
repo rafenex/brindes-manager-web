@@ -34,11 +34,13 @@
 
           <td>
             <p-select
+              #statusModel="ngModel"
               [options]="statusOptions"
               optionLabel="label"
               optionValue="value"
               [ngModel]="order.status"
-              (onChange)="updateStatus(order.id, $event.value)"
+              [disabled]="updatingStatus.has(order.id)"
+              (onChange)="statusModel.control.setValue(order.status, { emitViewToModelChange: false }); updateStatus(order.id, $event.value)"
               appendTo="body"
             />
           </td>

@@ -7,7 +7,8 @@ export type OrderStatus =
   | 'APPROVED'
   | 'IN_PRODUCTION'
   | 'DELIVERED'
-  | 'CANCELED';
+  | 'CANCELED'
+  | 'PAID';
 
 export interface OrderItemRequest {
   productId: number;
