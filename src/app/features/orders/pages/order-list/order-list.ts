@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
 import { CurrencyPipe, DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
 
@@ -10,6 +11,7 @@ import { Order, OrderService, OrderStatus } from '../../services/order.service';
 import { FormsModule } from '@angular/forms';
 import { SelectModule } from 'primeng/select';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { catchError, finalize, map, of, timeout } from 'rxjs';
 
 @Component({
   selector: 'app-order-list',
@@ -28,6 +30,8 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 export class OrderList implements OnInit {
   orders: Order[] = [];
   loading = true;
+  readonly updatingStatus = new Set<number>();
+  private statusesChangedDuringLoad?: Map<number, OrderStatus>;
   statusOptions: {
     label: string;
     value: OrderStatus;
@@ -52,6 +56,10 @@ export class OrderList implements OnInit {
       label: 'Cancelado',
       value: 'CANCELED',
     },
+    {
+      label: 'Pago',
+      value: 'PAID',
+    },
   ];
   constructor(
     private readonly orderService: OrderService,
@@ -65,14 +73,23 @@ export class OrderList implements OnInit {
   }
 
   loadOrders(): void {
+    const statusChanges = new Map<number, OrderStatus>();
+    this.statusesChangedDuringLoad = statusChanges;
     this.loading = true;
 
     this.orderService.findAll().subscribe({
       next: (orders) => {
-        this.orders = orders;
+        if (this.statusesChangedDuringLoad !== statusChanges) return;
+        this.orders = orders.map(order => {
+          const status = statusChanges.get(order.id);
+          return status === undefined ? order : { ...order, status };
+        });
+        this.statusesChangedDuringLoad = undefined;
         this.loading = false;
       },
       error: (error) => {
+        if (this.statusesChangedDuringLoad !== statusChanges) return;
+        this.statusesChangedDuringLoad = undefined;
         console.error('Erro ao buscar pedidos:', error);
         this.loading = false;
       },
@@ -128,6 +145,7 @@ export class OrderList implements OnInit {
       IN_PRODUCTION: 'Em produção',
       DELIVERED: 'Entregue',
       CANCELED: 'Cancelado',
+      PAID: 'Pago',
     };
 
     return labels[status];
@@ -145,31 +163,45 @@ export class OrderList implements OnInit {
       IN_PRODUCTION: 'warn',
       DELIVERED: 'success',
       CANCELED: 'danger',
+      PAID: 'success',
     };
 
     return severities[status];
   }
 
   updateStatus(id: number, status: OrderStatus): void {
-    this.orderService.updateStatus(id, status).subscribe({
-      next: () => {
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Sucesso',
-          detail: 'Status do pedido atualizado.',
-        });
+    if (this.updatingStatus.has(id)) return;
+    this.updatingStatus.add(id);
 
-        this.loadOrders();
-      },
-      error: (error) => {
-        console.error('Erro ao atualizar status:', error);
-
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Erro',
-          detail: 'Não foi possível atualizar o status do pedido.',
-        });
-      },
+    this.orderService.updateStatus(id, status).pipe(
+      timeout(15000),
+      map(order => ({ order, confirmed: true })),
+      catchError((error: unknown) => {
+        if (error instanceof HttpErrorResponse && [400, 401, 403, 404].includes(error.status)) {
+          return of({ order: null, confirmed: true });
+        }
+        return this.orderService.findById(id).pipe(
+          timeout(15000),
+          map(order => ({ order, confirmed: order.status === status })),
+          catchError(() => of({ order: null, confirmed: false })),
+        );
+      }),
+      finalize(() => this.updatingStatus.delete(id)),
+    ).subscribe(({ order, confirmed }) => {
+      if (order) {
+        this.statusesChangedDuringLoad?.set(id, order.status);
+        this.orders = this.orders.map(current => current.id === id ? order : current);
+      }
+      if (order?.status === status) {
+        this.messageService.add({ severity: 'success', summary: 'Sucesso',
+          detail: 'Status do pedido atualizado.' });
+      } else if (confirmed) {
+        this.messageService.add({ severity: 'error', summary: 'Erro',
+          detail: 'Não foi possível atualizar o status do pedido.' });
+      } else {
+        this.messageService.add({ severity: 'warn', summary: 'Status não confirmado',
+          detail: 'Não foi possível confirmar o status atual do pedido.' });
+      }
     });
   }
 
