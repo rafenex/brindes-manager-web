@@ -3,8 +3,10 @@
   <div class="form-card">
 
     <div class="form-header">
-      <h1>Novo usuário</h1>
-      <p>Cadastre um usuário para sua empresa.</p>
+      <h1>{{ userId === null ? 'Novo usuário' : 'Editar usuário' }}</h1>
+      @if (loading) {
+        <p role="status">Carregando usuário…</p>
+      }
     </div>
 
     <form
@@ -20,7 +22,12 @@
           id="name"
           formControlName="name"
           placeholder="Nome do usuário"
+          maxlength="120"
+          [readOnly]="!ready || !authService.isAdmin()"
         />
+        @if (form.controls.name.touched && form.controls.name.invalid) {
+          <small role="alert">Informe um nome com até 120 caracteres.</small>
+        }
       </div>
 
       <div class="field">
@@ -32,21 +39,30 @@
           type="email"
           formControlName="email"
           placeholder="usuario@empresa.com"
+          maxlength="160"
+          [readOnly]="!ready || !authService.isAdmin()"
         />
+        @if (form.controls.email.touched && form.controls.email.invalid) {
+          <small role="alert">Informe um e-mail válido com até 160 caracteres.</small>
+        }
       </div>
 
-      <div class="field">
-        <label for="password">Senha</label>
-
-        <p-password
-          inputId="password"
-          formControlName="password"
-          placeholder="Senha inicial"
-          [feedback]="false"
-          [toggleMask]="true"
-          styleClass="password"
-        />
-      </div>
+      @if (userId === null) {
+        <div class="field">
+          <label for="password">Senha</label>
+          <p-password
+            inputId="password"
+            formControlName="password"
+            placeholder="Senha inicial"
+            [feedback]="false"
+            [toggleMask]="true"
+            styleClass="password"
+          />
+          @if (form.controls.password.touched && form.controls.password.invalid) {
+            <small role="alert">Informe uma senha com pelo menos 6 caracteres.</small>
+          }
+        </div>
+      }
 
       <div class="actions">
         <p-button
@@ -61,7 +77,8 @@
           type="submit"
           label="Salvar"
           icon="pi pi-check"
-          [disabled]="form.invalid"
+          [loading]="saving"
+          [disabled]="!ready || saving || !authService.isAdmin()"
         />
       </div>
 

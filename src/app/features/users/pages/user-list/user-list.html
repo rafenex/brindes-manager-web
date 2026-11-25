@@ -6,11 +6,13 @@
       <p>Gerencie os usuários da sua empresa.</p>
     </div>
 
-    <p-button
-      label="Novo usuário"
-      icon="pi pi-plus"
-      (onClick)="newUser()"
-    />
+    @if (authService.isAdmin()) {
+      <p-button
+        label="Novo usuário"
+        icon="pi pi-plus"
+        (onClick)="newUser()"
+      />
+    }
   </div>
 
   <div class="table-card">
@@ -28,6 +30,7 @@
           <th>E-mail</th>
           <th>Perfil</th>
           <th>Status</th>
+          <th>Ações</th>
         </tr>
       </ng-template>
 
@@ -37,12 +40,31 @@
           <td>{{ user.email }}</td>
           <td>{{ user.role }}</td>
           <td>{{ user.active ? 'Ativo' : 'Inativo' }}</td>
+          <td>
+            @if (canManage(user)) {
+              <p-button
+                icon="pi pi-pencil"
+                [ariaLabel]="'Editar ' + user.name"
+                [text]="true"
+                (onClick)="editUser(user)"
+              />
+              <p-button
+                icon="pi pi-trash"
+                [ariaLabel]="'Excluir ' + user.name"
+                [text]="true"
+                severity="danger"
+                [loading]="deletingId === user.id"
+                [disabled]="deletingId !== null"
+                (onClick)="deleteUser(user)"
+              />
+            }
+          </td>
         </tr>
       </ng-template>
 
       <ng-template pTemplate="emptymessage">
         <tr>
-          <td colspan="4" class="empty">
+          <td colspan="5" class="empty">
             Nenhum usuário cadastrado.
           </td>
         </tr>
