@@ -10,9 +10,12 @@ export interface User {
   active: boolean;
 }
 
-export interface CreateUserRequest {
+export interface UpdateUserRequest {
   name: string;
   email: string;
+}
+
+export interface CreateUserRequest extends UpdateUserRequest {
   password: string;
 }
 
@@ -27,6 +30,18 @@ export class UserService {
 
   findAll(): Observable<User[]> {
     return this.http.get<User[]>(this.apiUrl);
+  }
+
+  findForEdit(id: number): Observable<User> {
+    return this.http.get<User>(`${this.apiUrl}/${id}`);
+  }
+
+  update(id: number, request: UpdateUserRequest): Observable<User> {
+    return this.http.put<User>(`${this.apiUrl}/${id}`, request);
+  }
+
+  delete(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 
   create(request: CreateUserRequest): Observable<User> {

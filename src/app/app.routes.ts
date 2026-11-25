@@ -45,6 +45,11 @@ export const routes: Routes = [
         canActivate: [adminGuard],
       },
       {
+        path: 'users/:id/edit',
+        component: UserForm,
+        canActivate: [adminGuard],
+      },
+      {
         path: 'users',
         component: UserList,
         canActivate: [adminGuard],

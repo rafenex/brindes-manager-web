@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
@@ -24,6 +24,7 @@ export interface RegisterRequest {
 
 interface JwtPayload {
   exp: number;
+  userId?: number;
   role: string;
   name: string;
   companyName: string;
@@ -35,6 +36,7 @@ interface JwtPayload {
 export class AuthService {
   private readonly apiUrl = '/api/auth';
   private readonly tokenKey = 'brindes_token';
+  private readonly deniedAdminToken = signal<string | null>(null);
 
   constructor(private readonly http: HttpClient) {}
 
@@ -44,6 +46,7 @@ export class AuthService {
 
   saveToken(token: string): void {
     localStorage.setItem(this.tokenKey, token);
+    this.deniedAdminToken.set(null);
   }
 
   getToken(): string | null {
@@ -52,6 +55,7 @@ export class AuthService {
 
   logout(): void {
     localStorage.removeItem(this.tokenKey);
+    this.deniedAdminToken.set(null);
   }
 
   isAuthenticated(): boolean {
@@ -78,7 +82,13 @@ export class AuthService {
   isAdmin(): boolean {
     const payload = this.getTokenPayload();
 
-    return payload?.role === 'ADMIN';
+    return payload?.role === 'ADMIN' && this.deniedAdminToken() !== this.getToken();
+  }
+
+  denyAdminForSession(token: string): void {
+    if (this.getToken() === token) {
+      this.deniedAdminToken.set(token);
+    }
   }
 
   private getTokenPayload(): JwtPayload | null {
@@ -95,6 +105,10 @@ export class AuthService {
     } catch {
       return null;
     }
+  }
+
+  getUserId(): number | undefined {
+    return this.getTokenPayload()?.userId;
   }
 
   getUserName(): string {
